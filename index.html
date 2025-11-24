@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Daman Dogra | Geomatics & Urban Data</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Portfolio of Daman Dogra — Geomatics engineer and urban & regional planner working on geospatial data, cultural heritage and urban resilience." />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-hFezB..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #0b1020;
+      --bg-elevated: #10172f;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22c55e;
+      --accent-soft: rgba(34, 197, 94, 0.15);
+      --border-subtle: rgba(148, 163, 184, 0.25);
+      --card-radius: 16px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.75);
+      --transition-fast: 0.2s ease;
+      --max-width: 1100px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 48%, #000 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
+    }
+
+    body.dark {
+      /* same palette; toggle is more about user control than drastic change */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* NAVBAR */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(15,23,42,0.95), rgba(15,23,42,0.85), transparent);
+      border-bottom: 1px solid rgba(30,64,175,0.35);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 1.5rem 0.9rem;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: conic-gradient(from 220deg, #22c55e, #22c55e 10%, #22c55e33, #22c55e, #22c55e);
+      border: 1px solid rgba(34,197,94,0.35);
+      box-shadow: 0 0 18px rgba(34,197,94,0.75);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+    }
+
+    .brand-text span:first-child {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .brand-text span:last-child {
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding-bottom: 0.1rem;
+      color: var(--muted);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.2rem;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(to right, #22c55e, #4ade80);
+      transition: width var(--transition-fast);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .icon-button {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.85);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all var(--transition-fast);
+    }
+
+    .icon-button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 18px rgba(34,197,94,0.4);
+      transform: translateY(-1px);
+    }
+
+    .nav-toggle {
+      display: none;
+    }
+
+    /* HERO */
+
+    .hero {
+      padding: 4rem 0 2.5rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      padding: 0.12rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .eyebrow i {
+      color: var(--accent);
+    }
+
+    .hero-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin: 0 0 0.4rem;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-text {
+      font-size: 0.98rem;
+      color: #d1d5db;
+      line-height: 1.7;
+      max-width: 34rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .badge {
+      font-size: 0.78rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+      background: rgba(15,23,42,0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .badge i {
+      font-size: 0.75rem;
+      color: var(--accent);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.55rem 1.3rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text);
+      transition: all var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at 10% -10%, #4ade80, #22c55e 40%, #16a34a 80%);
+      color: #022c22;
+      box-shadow: 0 18px 35px rgba(34,197,94,0.6);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      border-color: rgba(148,163,184,0.6);
+      background: rgba(15,23,42,0.75);
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 20px rgba(34,197,94,0.45);
+      transform: translateY(-1px);
+    }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-meta span {
+      opacity: 0.9;
+    }
+
+    .hero-aside {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .profile-card {
+      position: relative;
+      border-radius: 24px;
+      padding: 1.4rem;
+      background: radial-gradient(circle at top left, #22c55e1f 0, #020617 48%, #000 100%);
+      border: 1px solid rgba(34,197,94,0.35);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .profile-photo {
+      width: 84px;
+      height: 84px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #22c55e, #166534);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: #022c22;
+      border: 2px solid rgba(15,23,42,0.8);
+      margin-bottom: 0.8rem;
+    }
+
+    .profile-name {
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+    }
+
+    .profile-role {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+      font-size: 0.78rem;
+    }
+
+    .profile-item {
+      padding: 0.55rem 0.65rem;
+      border-radius: 10px;
+      background: rgba(15,23,42,0.82);
+      border: 1px solid rgba(148,163,184,0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .profile-item-label {
+      color: var(--muted);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .profile-item-value {
+      font-size: 0.82rem;
+    }
+
+    .profile-flair {
+      position: absolute;
+      inset: auto -40px -40px auto;
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle, rgba(34,197,94,0.25), transparent 60%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+      gap: 0.6rem;
+    }
+
+    .quick-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      padding: 0.55rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(148,163,184,0.45);
+      color: var(--muted);
+      transition: all var(--transition-fast);
+    }
+
+    .quick-link i {
+      font-size: 0.9rem;
+    }
+
+    .quick-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 16px rgba(34,197,94,0.4);
+      transform: translateY(-1px);
+    }
+
+    /* SECTIONS */
+
+    section {
+      padding: 2.8rem 0 2.2rem;
+    }
+
+    section:nth-of-type(odd) {
+      background: linear-gradient(to bottom, rgba(15,23,42,0.4), transparent 50%);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-kicker {
+      font-size: 0.88rem;
+      color: var(--muted);
+      max-width: 26rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      color: var(--muted);
+    }
+
+    .pill i {
+      color: var(--accent);
+    }
+
+    /* TIMELINE (Experience & Education share styles) */
+
+    .timeline {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 2.4fr);
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .timeline-column-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .timeline-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .timeline-items {
+      position: relative;
+      padding-left: 1.3rem;
+    }
+
+    .timeline-items::before {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 0.2rem;
+      bottom: 0.2rem;
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(148,163,184,0.8), transparent 60%);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.25rem;
+      padding-left: 0.8rem;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -0.28rem;
+      top: 0.3rem;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34,197,94,0.8);
+    }
+
+    .timeline-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.9rem;
+      align-items: baseline;
+      margin-bottom: 0.15rem;
+    }
+
+    .timeline-role {
+      font-size: 0.96rem;
+      font-weight: 500;
+    }
+
+    .timeline-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .timeline-org {
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(148,163,184,0.35);
+      color: var(--muted);
+    }
+
+    .timeline-bullets {
+      font-size: 0.86rem;
+      color: #d1d5db;
+      padding-left: 0.9rem;
+      margin: 0.2rem 0 0.4rem;
+    }
+
+    .timeline-bullets li {
+      margin-bottom: 0.16rem;
+    }
+
+    /* PROJECTS */
+
+    .projects-header-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.1rem;
+    }
+
+    .filter-group {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 0.15rem;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.45);
+    }
+
+    .filter-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.75rem;
+      padding: 0.32rem 0.7rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .filter-btn.active {
+      background: var(--accent-soft);
+      color: #bbf7d0;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .project-card {
+      position: relative;
+      border-radius: var(--card-radius);
+      padding: 1.1rem 1.1rem 1rem;
+      background: radial-gradient(circle at top left, rgba(34,197,94,0.12), #020617 50%);
+      border: 1px solid rgba(148,163,184,0.5);
+      box-shadow: 0 14px 32px rgba(15,23,42,0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 18px 40px rgba(34,197,94,0.35);
+    }
+
+    .project-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.7rem;
+      align-items: flex-start;
+    }
+
+    .project-title {
+      font-weight: 500;
+      margin-bottom: 0.1rem;
+    }
+
+    .project-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .project-tagchip {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      color: #bbf7d0;
+      background: rgba(34,197,94,0.15);
+      white-space: nowrap;
+    }
+
+    .project-body {
+      color: #d1d5db;
+      line-height: 1.6;
+    }
+
+    .project-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-top: 0.3rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .project-tags-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+
+    .mini-tag {
+      font-size: 0.72rem;
+      padding: 0.18rem 0.4rem;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+
+    .project-toggle {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .project-toggle i {
+      font-size: 0.7rem;
+    }
+
+    .project-body[data-collapsed="true"] {
+      max-height: 3.3em;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .project-body[data-collapsed="true"]::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1.6em;
+      background: linear-gradient(to bottom, transparent, #020617);
+    }
+
+    /* SKILLS */
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-card {
+      border-radius: var(--card-radius);
+      padding: 1rem;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 12px 28px rgba(15,23,42,0.7);
+    }
+
+    .skill-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+    }
+
+    .skill-card-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .skill-chip {
+      font-size: 0.72rem;
+      padding: 0.18rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      color: var(--muted);
+    }
+
+    .skill-list {
+      font-size: 0.82rem;
+      color: #d1d5db;
+      line-height: 1.7;
+    }
+
+    /* AWARDS & MISC */
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.7fr);
+      gap: 1.5rem;
+    }
+
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.86rem;
+    }
+
+    .list-item {
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.4);
+      background: rgba(15,23,42,0.9);
+      padding: 0.7rem 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .list-item-title {
+      font-weight: 500;
+      margin-bottom: 0.1rem;
+    }
+
+    .list-item-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.1rem;
+    }
+
+    .list-item-body {
+      color: #d1d5db;
+      font-size: 0.84rem;
+    }
+
+    /* CONTACT */
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
+      gap: 1.5rem;
+    }
+
+    .contact-card {
+      border-radius: var(--card-radius);
+      padding: 1.1rem;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      box-shadow: 0 14px 32px rgba(15,23,42,0.7);
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .contact-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--accent);
+      background: rgba(15,23,42,0.9);
+    }
+
+    .contact-col {
+      font-size: 0.86rem;
+    }
+
+    .contact-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .contact-main {
+      font-weight: 500;
+    }
+
+    .contact-form {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+    }
+
+    .contact-form label {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(15,23,42,0.9);
+      color: var(--text);
+      padding: 0.5rem 0.7rem;
+      font-family: inherit;
+      font-size: 0.86rem;
+      margin-bottom: 0.65rem;
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(34,197,94,0.3);
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .contact-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .footer {
+      border-top: 1px solid rgba(15,23,42,0.8);
+      padding: 1.3rem 0 1.6rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+    }
+
+    /* SCROLL TO TOP */
+
+    .scroll-top {
+      position: fixed;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+      z-index: 40;
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+      box-shadow: 0 12px 25px rgba(15,23,42,0.7);
+    }
+
+    .scroll-top:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 880px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-aside {
+        order: -1;
+      }
+      .timeline {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .two-col,
+      .contact-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .projects-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        padding: 0.7rem 1.5rem 0.8rem;
+        background: rgba(15,23,42,0.98);
+        border-bottom: 1px solid rgba(30,64,175,0.7);
+      }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-toggle {
+        display: inline-flex;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding-top: 3.1rem;
+      }
+      .hero-title {
+        font-size: 2rem;
+      }
+      .profile-card {
+        padding: 1.1rem;
+      }
+      .timeline-items::before {
+        left: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- NAV -->
+    <header class="nav">
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <div class="brand-text">
+            <span>Portfolio</span>
+            <span>Daman Dogra</span>
+          </div>
+        </div>
+
+        <nav class="nav-links" id="navLinks">
+          <a href="#about">About</a>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#research">Research</a>
+          <a href="#skills">Skills</a>
+          <a href="#extras">Awards</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="icon-button" id="themeToggle" aria-label="Toggle dark theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <button class="icon-button nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero" id="about">
+        <div class="container">
+          <div class="hero-grid">
+            <div>
+              <div class="eyebrow">
+                <i class="fa-solid fa-location-dot"></i>
+                Delft · Geomatics & Urban Data
+              </div>
+              <h1 class="hero-title">Geomatics engineer working on cultural heritage & urban data.</h1>
+              <div class="hero-subtitle">
+                M.Sc Geomatics · TU Delft · Urban & Regional Planner
+              </div>
+              <p class="hero-text">
+                I work at the intersection of <strong>geomatics, cultural heritage and urban planning</strong> —
+                deploying open-source spatial infrastructures, reconstructing endangered temples in 3D, and
+                building data pipelines that make complex territories legible for planners, researchers and local communities.
+              </p>
+
+              <div class="hero-badges">
+                <span class="badge"><i class="fa-solid fa-database"></i> Arches, PostGIS, FAIR data</span>
+                <span class="badge"><i class="fa-solid fa-vector-square"></i> Cultural routes & soundscapes</span>
+                <span class="badge"><i class="fa-solid fa-bus"></i> Urban mobility & waterfronts</span>
+              </div>
+
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="YOUR_CV_FILE.pdf" target="_blank" rel="noopener">
+                  <i class="fa-solid fa-file-arrow-down"></i>
+                  Download CV
+                </a>
+                <a class="btn btn-ghost" href="https://github.com/damandogra" target="_blank" rel="noopener">
+                  <i class="fa-brands fa-github"></i>
+                  View GitHub
+                </a>
+              </div>
+
+              <div class="hero-meta">
+                <span>Currently based in Delft · previously @ IIT Roorkee, civic design lab, public sector advisory, and grassroots NGOs.</span>
+              </div>
+            </div>
+
+            <aside class="hero-aside">
+              <div class="profile-card">
+                <div class="profile-photo">DD</div>
+                <div class="profile-name">Daman Dogra</div>
+                <div class="profile-role">Geomatics engineer & urban/regional planner</div>
+                <div class="profile-grid">
+                  <div class="profile-item">
+                    <span class="profile-item-label">Current</span>
+                    <span class="profile-item-value">M.Sc Geomatics, TU Delft</span>
+                  </div>
+                  <div class="profile-item">
+                    <span class="profile-item-label">Background</span>
+                    <span class="profile-item-value">B.Plan (Hons), SPA Bhopal</span>
+                  </div>
+                  <div class="profile-item">
+                    <span class="profile-item-label">Domains</span>
+                    <span class="profile-item-value">Cultural heritage, urban data, resilience</span>
+                  </div>
+                  <div class="profile-item">
+                    <span class="profile-item-label">Stack</span>
+                    <span class="profile-item-value">Python · PostGIS · QGIS · FME</span>
+                  </div>
+                </div>
+                <div class="profile-flair"></div>
+              </div>
+
+              <div class="quick-links">
+                <a class="quick-link" href="https://www.linkedin.com/in/daman-dogra/" target="_blank" rel="noopener">
+                  <i class="fa-brands fa-linkedin"></i>
+                  LinkedIn
+                </a>
+                <a class="quick-link" href="https://scholar.google.com/citations?user=mCsx-J0AAAAJ&hl=en" target="_blank" rel="noopener">
+                  <i class="fa-brands fa-google"></i>
+                  Google Scholar
+                </a>
+                <a class="quick-link" href="https://github.com/damandogra" target="_blank" rel="noopener">
+                  <i class="fa-brands fa-github"></i>
+                  GitHub
+                </a>
+                <a class="quick-link" href="#experience">
+                  <i class="fa-solid fa-arrow-down-long"></i>
+                  View experience
+                </a>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section id="experience">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Experience</h2>
+            <p class="section-kicker">
+              From <strong>open-source heritage inventories</strong> and neighbourhood plans to
+              <strong>public sector advisory</strong> and teaching — always with an eye on spatial data, equity, and governance.
+            </p>
+          </div>
+
+          <div class="timeline">
+            <div>
+              <div class="timeline-column-title">Trajectory</div>
+              <p class="timeline-note">
+                I move between academia, civic labs and practice: implementing geospatial systems,
+                co-authoring research, and working directly with local governments and communities.
+              </p>
+            </div>
+            <div class="timeline-items">
+              <article class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-heading">
+                  <div class="timeline-role">Project Associate · Civic Design Lab</div>
+                  <div class="timeline-meta">Apr 2023 – Jul 2025 · IIT Roorkee</div>
+                </div>
+                <div class="timeline-org">Indian Institute of Technology (IIT) Roorkee · Uttarakhand, India</div>
+                <div class="timeline-tags">
+                  <span class="tag">Arches</span>
+                  <span class="tag">Geomatics</span>
+                  <span class="tag">Cultural routes</span>
+                  <span class="tag">FAIR data</span>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Deployed and configured the <strong>Arches Heritage Inventory and Management System</strong> in a local environment, mapping Bhotiya cultural routes and their tangible/intangible assets.</li>
+                  <li>Adapted resource models and mapped datasets to <strong>CIDOC-CRM</strong> for consistent semantic and geospatial structure.</li>
+                  <li>Led <strong>UAV photogrammetry and ALS-based 3D reconstruction</strong> of endangered wooden temples in Uttarakhand.</li>
+                  <li>Co-authored project proposals in geomatics and urban/regional planning, contributing to funding from DST, ICSSR, JSPS and Oxford Brookes University.</li>
+                </ul>
+              </article>
+
+              <article class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-heading">
+                  <div class="timeline-role">Teaching Assistant · NPTEL</div>
+                  <div class="timeline-meta">Aug 2023 – Sep 2023 · Remote</div>
+                </div>
+                <div class="timeline-org">National Programme on Technology Enhanced Learning (NPTEL)</div>
+                <div class="timeline-tags">
+                  <span class="tag">Vernacular architecture</span>
+                  <span class="tag">Online pedagogy</span>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Supported the course <em>International Studies in Vernacular Architecture</em> with moderation, content preparation and live Q&A facilitation.</li>
+                </ul>
+              </article>
+
+              <article class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-heading">
+                  <div class="timeline-role">Junior Urban Planner</div>
+                  <div class="timeline-meta">Oct 2022 – Mar 2023 · Indore</div>
+                </div>
+                <div class="timeline-org">PLADECO Consultants</div>
+                <div class="timeline-tags">
+                  <span class="tag">Neighbourhood planning</span>
+                  <span class="tag">Infrastructure networks</span>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Prepared a <strong>comprehensive neighbourhood plan</strong> for Ward 82, including land use, public space and infrastructure optimisation.</li>
+                  <li>Redesigned stormwater, water supply and drainage networks to improve resilience and operational efficiency.</li>
+                  <li>Reimagined major streets and recreational spaces to improve walkability and community life.</li>
+                </ul>
+              </article>
+
+              <article class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-heading">
+                  <div class="timeline-role">Associate · Government & Public Sector Advisory</div>
+                  <div class="timeline-meta">Jul 2022 – Sep 2022 · Hazaribagh</div>
+                </div>
+                <div class="timeline-org">Nangia &amp; Co LLP</div>
+                <div class="timeline-tags">
+                  <span class="tag">Street vending plans</span>
+                  <span class="tag">Stakeholder engagement</span>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Developed frameworks and methodologies for <strong>street vendor plans</strong> across five urban local bodies.</li>
+                  <li>Led a team of surveyors, coordinated participatory workshops, and represented the firm in Urban Local Body meetings.</li>
+                </ul>
+              </article>
+
+              <article class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-heading">
+                  <div class="timeline-role">Urban Transport & Green Financing Intern</div>
+                  <div class="timeline-meta">Jul 2021 – Aug 2021 · Bengaluru</div>
+                </div>
+                <div class="timeline-org">Janaagraha – Centre for Citizenship and Democracy</div>
+                <div class="timeline-tags">
+                  <span class="tag">SPBTF</span>
+                  <span class="tag">Green recovery</span>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Compiled and analysed datasets for <strong>Sustainable Public Bus Transport Financing (SPBTF)</strong> and the <strong>Green Economic Recovery Programme</strong>, supporting policy recommendations.</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EDUCATION -->
+      <section>
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Education</h2>
+            <p class="section-kicker">
+              An urban & regional planning foundation, extended into advanced geomatics and spatial data infrastructures.
+            </p>
+          </div>
+
+          <div class="timeline">
+            <div>
+              <div class="timeline-column-title">Formal</div>
+              <p class="timeline-note">
+                I combine quantitative spatial toolkits with planning theory, governance, and on-the-ground project work.
+              </p>
+            </div>
+            <div class="timeline-items">
+              <article class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-heading">
+                  <div class="timeline-role">M.Sc Geomatics</div>
+                  <div class="timeline-meta">2025 – Present · Delft</div>
+                </div>
+                <div class="timeline-org">Delft University of Technology</div>
+                <div class="timeline-tags">
+                  <span class="tag">Python · GeoPandas</span>
+                  <span class="tag">GDAL</span>
+                  <span class="tag">PostgreSQL &amp; PostGIS</span>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Coursework and labs in spatial data processing, database-backed geospatial workflows, and advanced GIS.</li>
+                </ul>
+              </article>
+
+              <article class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-heading">
+                  <div class="timeline-role">B.Plan · Urban &amp; Regional Planning (Hons, CGPA 8)</div>
+                  <div class="timeline-meta">2018 – 2022 · Bhopal</div>
+                </div>
+                <div class="timeline-org">School of Planning and Architecture, Bhopal</div>
+                <div class="timeline-tags">
+                  <span class="tag">Urban planning</span>
+                  <span class="tag">Transport &amp; land use</span>
+                  <span class="tag">Waterfronts</span>
+                </div>
+                <ul class="timeline-bullets">
+                  <li>Thesis: <strong>Revitalisation of Urban Waterfronts through WaTOD: A case of Jhelum River in Srinagar</strong>.</li>
+                  <li>Selected among the <strong>Top 10 undergraduate theses in India</strong> by NIUA, receiving a 600 € research grant.</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="projects">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Projects</h2>
+            <p class="section-kicker">
+              Long-running, funded work in <strong>cultural-route digitisation, 3D heritage capture</strong> and
+              <strong>climate-resilient planning</strong>.
+            </p>
+          </div>
+
+          <div class="projects-header-row">
+            <span class="pill"><i class="fa-solid fa-layer-group"></i> Filter by focus</span>
+            <div class="filter-group" id="projectFilters">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="heritage">Heritage &amp; culture</button>
+              <button class="filter-btn" data-filter="geomatics">Geomatics &amp; data</button>
+              <button class="filter-btn" data-filter="policy">Policy &amp; resilience</button>
+            </div>
+          </div>
+
+          <div class="project-grid">
+            <article class="project-card" data-category="heritage geomatics">
+              <div class="project-title-row">
+                <div>
+                  <div class="project-title">GIS Toolkit for Bhotiya Cultural Routes</div>
+                  <div class="project-meta">2023 – 2025 · IIT Roorkee · DST-funded</div>
+                </div>
+                <span class="project-tagchip">Arches · FAIR</span>
+              </div>
+              <div class="project-body" data-collapsed="true">
+                I deployed an <strong>open-access Arches Heritage Inventory and Management System</strong> to document Bhotiya
+                cultural routes in Uttarakhand — integrating spatial, semantic and narrative data into a coherent knowledge graph.
+                This involved designing resource models, aligning entities with <strong>CIDOC-CRM</strong>, and managing
+                multi-source dataset ingestion, from field surveys to existing GIS layers. The toolkit enables planners, researchers
+                and communities to explore routes, rituals and sites through an interactive, map-based interface.
+              </div>
+              <div class="project-foot">
+                <div class="project-tags-inline">
+                  <span class="mini-tag">Arches</span>
+                  <span class="mini-tag">PostGIS</span>
+                  <span class="mini-tag">Cultural routes</span>
+                </div>
+                <button class="project-toggle">
+                  more <i class="fa-solid fa-chevron-down"></i>
+                </button>
+              </div>
+            </article>
+
+            <article class="project-card" data-category="heritage geomatics">
+              <div class="project-title-row">
+                <div>
+                  <div class="project-title">3D Reconstruction of Endangered Wooden Temples</div>
+                  <div class="project-meta">2024 – 2025 · IIT Roorkee · Oxford Brookes-funded</div>
+                </div>
+                <span class="project-tagchip">Photogrammetry &amp; ALS</span>
+              </div>
+              <div class="project-body" data-collapsed="true">
+                As field lead, I designed and executed a workflow combining <strong>UAV photogrammetry, aerial laser scanning (ALS)</strong>
+                and <strong>RTK-based control</strong> to generate high-fidelity 3D models of historic wooden temples.
+                I coordinated acquisitions, managed data processing using <em>RealityCapture, Autodesk Recap Pro</em> and open-source tools,
+                and supported the creation of interactive visualisations for conservation and education.
+              </div>
+              <div class="project-foot">
+                <div class="project-tags-inline">
+                  <span class="mini-tag">Point clouds</span>
+                  <span class="mini-tag">RTK</span>
+                  <span class="mini-tag">Heritage</span>
+                </div>
+                <button class="project-toggle">
+                  more <i class="fa-solid fa-chevron-down"></i>
+                </button>
+              </div>
+            </article>
+
+            <article class="project-card" data-category="policy geomatics">
+              <div class="project-title-row">
+                <div>
+                  <div class="project-title">CCA &amp; DRR Integration Framework</div>
+                  <div class="project-meta">2023 · ICSSR &amp; JSPS-funded</div>
+                </div>
+                <span class="project-tagchip">Resilience</span>
+              </div>
+              <div class="project-body" data-collapsed="true">
+                Contributed to the final phase of an <strong>Integrated Climate Change Adaptation (CCA) and Disaster Risk Reduction (DRR)</strong>
+                project by synthesising system dynamics modelling, spatial risk mapping and traditional knowledge.
+                The output was a report that helps cities align climate adaptation, disaster governance and local practices in one framework.
+              </div>
+              <div class="project-foot">
+                <div class="project-tags-inline">
+                  <span class="mini-tag">System dynamics</span>
+                  <span class="mini-tag">Urban resilience</span>
+                </div>
+                <button class="project-toggle">
+                  more <i class="fa-solid fa-chevron-down"></i>
+                </button>
+              </div>
+            </article>
+
+            <article class="project-card" data-category="policy heritage">
+              <div class="project-title-row">
+                <div>
+                  <div class="project-title">Heritage Bye-laws · Ramnagar Fort &amp; Samadhi</div>
+                  <div class="project-meta">2023 – 2024 · NMA-funded</div>
+                </div>
+                <span class="project-tagchip">Regulation</span>
+              </div>
+              <div class="project-body" data-collapsed="true">
+                Worked in a two-person team to draft heritage bye-laws for the <strong>ancient fort attributed to Raja Suchet Singh</strong>
+                and the Queen’s Samadhi in Ramnagar. My role included detailed mapping, reviewing local planning regulations and
+                preparing the final technical submission to the National Monuments Authority.
+              </div>
+              <div class="project-foot">
+                <div class="project-tags-inline">
+                  <span class="mini-tag">Heritage bye-laws</span>
+                  <span class="mini-tag">Planning regimes</span>
+                </div>
+                <button class="project-toggle">
+                  more <i class="fa-solid fa-chevron-down"></i>
+                </button>
+              </div>
+            </article>
+
+            <article class="project-card" data-category="policy geomatics">
+              <div class="project-title-row">
+                <div>
+                  <div class="project-title">WaTOD · Revitalising the Jhelum Waterfront</div>
+                  <div class="project-meta">2022 – 2023 · NIUA thesis grant</div>
+                </div>
+                <span class="project-tagchip">Waterfronts &amp; transit</span>
+              </div>
+              <div class="project-body" data-collapsed="true">
+                Bachelor’s thesis that proposes a <strong>Water transit-oriented development (WaTOD)</strong> model for the
+                Jhelum River in Srinagar, integrating river transport into city structure.
+                The work combined spatial analysis, scenario building and policy recommendations and was later developed into a
+                peer-reviewed journal article.
+              </div>
+              <div class="project-foot">
+                <div class="project-tags-inline">
+                  <span class="mini-tag">Urban rivers</span>
+                  <span class="mini-tag">Transit</span>
+                  <span class="mini-tag">NIUA</span>
+                </div>
+                <button class="project-toggle">
+                  more <i class="fa-solid fa-chevron-down"></i>
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESEARCH -->
+      <section id="research">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Research &amp; Publications</h2>
+            <p class="section-kicker">
+              Work at the intersection of <strong>linked open data, cultural routes, waterfronts</strong> and
+              <strong>acoustic urbanism</strong>, plus ongoing conference contributions.
+            </p>
+          </div>
+
+          <div class="two-col">
+            <div>
+              <h3 class="timeline-column-title">Peer-reviewed</h3>
+              <ul class="list">
+                <li class="list-item">
+                  <div class="list-item-title">Linked Open Data for Cultural Routes</div>
+                  <div class="list-item-meta">Book chapter · 2024 · Advancing Heritage Innovations in India</div>
+                  <p class="list-item-body">
+                    Co-authored chapter on <strong>customising Linked Open Data ontologies</strong> for digitally archiving
+                    cultural routes, focusing on semantic modelling of heritage assets and practices.
+                  </p>
+                </li>
+                <li class="list-item">
+                  <div class="list-item-title">Revitalisation of Urban Waterfronts through WaTOD</div>
+                  <div class="list-item-meta">Journal article · 2024 · Urban India (NIUA)</div>
+                  <p class="list-item-body">
+                    Extends bachelor’s thesis into a full paper on <strong>Water transit-oriented development</strong> along
+                    the Jhelum River, analysing land-use, accessibility and governance structures.
+                  </p>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="timeline-column-title">In progress &amp; talks</h3>
+              <ul class="list">
+                <li class="list-item">
+                  <div class="list-item-title">Modelling Soundscapes on University Campuses</div>
+                  <div class="list-item-meta">Working paper · accepted for InterNoise</div>
+                  <p class="list-item-body">
+                    With Prof. Manavvi Suneja and Syed Azhar Akhtar, evaluating how
+                    <strong>urban form affects perceived acoustic pleasantness</strong> using spatial-acoustic modelling.
+                  </p>
+                </li>
+                <li class="list-item">
+                  <div class="list-item-title">International Conference on Contemporary Affairs in Architecture &amp; Urbanism</div>
+                  <div class="list-item-meta">2024 · Alanya, Turkey</div>
+                  <p class="list-item-body">
+                    Presented on <em>customising Linked Open Data ontologies for cultural-route digitisation</em>.
+                  </p>
+                </li>
+                <li class="list-item">
+                  <div class="list-item-title">India Land &amp; Development Conference</div>
+                  <div class="list-item-meta">2021 · Bhubaneswar, India</div>
+                  <p class="list-item-body">
+                    Presented work on <strong>trending land-use conversions in Indian SEZs</strong>.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Skills</h2>
+            <p class="section-kicker">
+              Comfortable across code, GIS, reality capture and planning — with an emphasis on
+              reproducible spatial workflows and open tooling.
+            </p>
+          </div>
+
+          <div class="skills-grid">
+            <article class="skill-card">
+              <div class="skill-card-header">
+                <div class="skill-card-title">Programming &amp; data</div>
+                <span class="skill-chip">Python · C++</span>
+              </div>
+              <p class="skill-list">
+                Python (GeoPandas, GDAL, rasterio, laspy, matplotlib), C++; data analysis in
+                SQL and PostgreSQL; working knowledge of <strong>Docker</strong> and basic cloud deployment practices.
+              </p>
+            </article>
+
+            <article class="skill-card">
+              <div class="skill-card-header">
+                <div class="skill-card-title">Databases &amp; geospatial infra</div>
+                <span class="skill-chip">PostgreSQL · PostGIS</span>
+              </div>
+              <p class="skill-list">
+                Spatial schema design, spatial indexing, PostGIS workflows; Arches-based
+                heritage inventories; version control with Git.
+              </p>
+            </article>
+
+            <article class="skill-card">
+              <div class="skill-card-header">
+                <div class="skill-card-title">GIS &amp; reality capture</div>
+                <span class="skill-chip">QGIS · FME · GRASS</span>
+              </div>
+              <p class="skill-list">
+                QGIS, GRASS GIS, FME; Autodesk Recap Pro, RealityCapture, Adobe Lightroom;
+                UAV &amp; ALS data processing, point-cloud handling, DEM generation.
+              </p>
+            </article>
+
+            <article class="skill-card">
+              <div class="skill-card-header">
+                <div class="skill-card-title">Planning &amp; communication</div>
+                <span class="skill-chip">Urban projects</span>
+              </div>
+              <p class="skill-list">
+                Neighbourhood plans, waterfront strategies, vendor plans, resilience frameworks;
+                stakeholder workshops, community engagement, technical reporting and teaching (NPTEL, school-level AI).
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- AWARDS / LEADERSHIP / VOLUNTEERING -->
+      <section id="extras">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Awards &amp; Leadership</h2>
+            <p class="section-kicker">
+              Recognition for thesis work, student leadership and ongoing commitment to teaching and volunteering.
+            </p>
+          </div>
+
+          <div class="two-col">
+            <div>
+              <h3 class="timeline-column-title">Honours &amp; workshops</h3>
+              <ul class="list">
+                <li class="list-item">
+                  <div class="list-item-title">NIUA Sponsored Thesis Competition</div>
+                  <div class="list-item-meta">2022 · Top 10 in India</div>
+                  <p class="list-item-body">
+                    600 € grant from the National Institute of Urban Affairs, Ministry of Housing &amp; Urban Affairs, Government of India,
+                    for WaTOD-based Jhelum waterfront thesis.
+                  </p>
+                </li>
+                <li class="list-item">
+                  <div class="list-item-title">Photogrammetry in Cultural Heritage Documentation</div>
+                  <div class="list-item-meta">2024 · Factum Foundation</div>
+                  <p class="list-item-body">
+                    One of ten students selected for a fully sponsored, four-week intensive workshop, covering capture to 3D modelling &amp; CAD.
+                  </p>
+                </li>
+                <li class="list-item">
+                  <div class="list-item-title">Selected certifications (Coursera, EdX, ADB, EPFL, Esri)</div>
+                  <div class="list-item-body">
+                    Courses in digital twins, data analytics, smart cities, sustainable finance, green investments, energy policy
+                    and Python/GIS tooling.
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="timeline-column-title">Leadership &amp; volunteering</h3>
+              <ul class="list">
+                <li class="list-item">
+                  <div class="list-item-title">Unit Coordinator · NOSPlan</div>
+                  <div class="list-item-meta">2020 – 2021</div>
+                  <p class="list-item-body">
+                    Represented ~200 planning students at the National Council; led the SPA Bhopal delegation to
+                    first runner-up at the annual convention.
+                  </p>
+                </li>
+                <li class="list-item">
+                  <div class="list-item-title">Teacher (Artificial Intelligence) · eVidyaloka Foundation</div>
+                  <div class="list-item-meta">2024 – 2025</div>
+                  <p class="list-item-body">
+                    Weekly remote classes introducing AI concepts to high-school students in a government school in Madhya Pradesh,
+                    supporting SDG 4 on quality education.
+                  </p>
+                </li>
+                <li class="list-item">
+                  <div class="list-item-title">Fundraising &amp; community work</div>
+                  <div class="list-item-meta">Muskurahat Foundation · Prisha Club</div>
+                  <p class="list-item-body">
+                    Campaigns for children in slums, orphanages and shelter homes; workshops and recreational activities in schools
+                    and nursing homes around Bhopal.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Contact</h2>
+            <p class="section-kicker">
+              Open to collaborations in <strong>geomatics, heritage documentation, urban data and planning research</strong>.
+            </p>
+          </div>
+
+          <div class="contact-grid">
+            <div class="contact-card">
+              <div class="contact-row">
+                <div class="contact-icon">
+                  <i class="fa-solid fa-envelope-open-text"></i>
+                </div>
+                <div class="contact-col">
+                  <div class="contact-label">Email</div>
+                  <div class="contact-main">
+                    <a href="mailto:ddogra@tudelft.nl">ddogra@tudelft.nl</a>
+                  </div>
+                  <div class="contact-hint">
+                    Also reachable at <a href="mailto:damandograa@gmail.com">damandograa@gmail.com</a>
+                    for India-based work.
+                  </div>
+                </div>
+              </div>
+
+              <div class="contact-row">
+                <div class="contact-icon">
+                  <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <div class="contact-col">
+                  <div class="contact-label">Location</div>
+                  <div class="contact-main">Delft, Netherlands · previously Roorkee &amp; Bhopal</div>
+                </div>
+              </div>
+
+              <div class="contact-row">
+                <div class="contact-icon">
+                  <i class="fa-solid fa-share-nodes"></i>
+                </div>
+                <div class="contact-col">
+                  <div class="contact-label">Profiles</div>
+                  <div class="contact-main">
+                    <a href="https://www.linkedin.com/in/daman-dogra/" target="_blank" rel="noopener">LinkedIn</a> ·
+                    <a href="https://github.com/damandogra" target="_blank" rel="noopener">GitHub</a> ·
+                    <a href="https://scholar.google.com/citations?user=mCsx-J0AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <h3 class="timeline-column-title">Quick note</h3>
+              <form class="contact-form" action="mailto:ddogra@tudelft.nl" method="post" enctype="text/plain">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your name" />
+
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" />
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Tell me a bit about your project, collaboration idea or question."></textarea>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                  <i class="fa-solid fa-paper-plane"></i>
+                  Send email (opens client)
+                </button>
+              </form>
+              <p class="contact-hint" style="margin-top:0.6rem;">
+                This form uses <code>mailto:</code> so it opens in your email client — suitable for a simple GitHub Pages site without a backend.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>© <span id="year"></span> · Daman Dogra.</div>
+        <div class="footer-links">
+          <a href="#about">About</a>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#research">Research</a>
+        </div>
+      </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll back to top">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+  </div>
+
+  <script>
+    // Active nav link on scroll + smooth scroll
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href')));
+
+    function onScroll() {
+      const scrollPos = window.scrollY || window.pageYOffset;
+      const offset = 120;
+      let activeIndex = 0;
+
+      sections.forEach((sec, idx) => {
+        if (sec && sec.offsetTop - offset <= scrollPos) {
+          activeIndex = idx;
+        }
+      });
+
+      navLinks.forEach((link, idx) => {
+        link.classList.toggle('active', idx === activeIndex);
+      });
+
+      // Scroll-to-top visibility
+      const scrollBtn = document.getElementById('scrollTopBtn');
+      if (scrollPos > 480) {
+        scrollBtn.classList.add('visible');
+      } else {
+        scrollBtn.classList.remove('visible');
+      }
+    }
+
+    window.addEventListener('scroll', onScroll);
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          const y = target.getBoundingClientRect().top + window.pageYOffset - 90;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+        // close mobile nav
+        const navLinksEl = document.getElementById('navLinks');
+        navLinksEl.classList.remove('open');
+      });
+    });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const storedTheme = window.localStorage.getItem('daman-theme');
+
+    if (storedTheme === 'dark') {
+      document.body.classList.add('dark');
+    }
+
+    function updateThemeIcon() {
+      const icon = themeToggle.querySelector('i');
+      if (document.body.classList.contains('dark')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+    }
+
+    updateThemeIcon();
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const theme = document.body.classList.contains('dark') ? 'dark' : 'light';
+      window.localStorage.setItem('daman-theme', theme);
+      updateThemeIcon();
+    });
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    navToggle.addEventListener('click', () => {
+      const navLinksEl = document.getElementById('navLinks');
+      navLinksEl.classList.toggle('open');
+    });
+
+    // Projects filter
+    const filterGroup = document.getElementById('projectFilters');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterGroup.addEventListener('click', e => {
+      if (!e.target.matches('.filter-btn')) return;
+      const filter = e.target.getAttribute('data-filter');
+
+      filterGroup.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn === e.target);
+      });
+
+      projectCards.forEach(card => {
+        if (filter === 'all') {
+          card.style.display = '';
+        } else {
+          const categories = card.getAttribute('data-category').split(' ');
+          card.style.display = categories.includes(filter) ? '' : 'none';
+        }
+      });
+    });
+
+    // Project expand/collapse
+    document.querySelectorAll('.project-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const body = btn.closest('.project-card').querySelector('.project-body');
+        const isCollapsed = body.getAttribute('data-collapsed') === 'true';
+        body.setAttribute('data-collapsed', isCollapsed ? 'false' : 'true');
+        btn.innerHTML = isCollapsed
+          ? 'less <i class="fa-solid fa-chevron-up"></i>'
+          : 'more <i class="fa-solid fa-chevron-down"></i>';
+      });
+    });
+
+    // Scroll-to-top
+    document.getElementById('scrollTopBtn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
