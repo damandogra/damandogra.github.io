@@ -14,14 +14,14 @@ export const siteConfig = {
   skills: ["Python", "C++", "PostgreSQL", "POSTGIS", "Docker", "QGIS"],
   projects: [
     {
-      name: "AI Dev Roundup Newsletter",
+      name: "Automatic Classification of Point Clouds",
       description:
         "One concise email. Five minutes. Every Tuesday. Essential AI news & trends, production-ready libraries, powerful AI tools, and real-world code examples",
       link: "https://aidevroundup.com/?ref=devportfolio",
       skills: ["React", "Node.js", "AWS"],
     },
     {
-      name: "Chrome Extension Mastery: Build Full-Stack Extensions with React & Node.js",
+      name: "Extracting Contour lines from the Raster files.",
       description:
         "Master the art of building production-ready, full-stack Chrome Extensions using modern web technologies and best practices",
       link: "https://fullstackextensions.com/?ref=devportfolio",
