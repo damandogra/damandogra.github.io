@@ -129,6 +129,7 @@ import { siteConfig } from "../config";
       height="100%"
       stroke-width={0}></rect>
   </svg>
+
   <div class="h-full mx-auto p-8 sm:p-12 md:p-24 flex items-center">
     <div>
       <h2
@@ -150,6 +151,7 @@ import { siteConfig } from "../config";
       </p>
     </div>
   </div>
+
   <div
     class="absolute bottom-0 left-0 right-0 p-8 sm:p-12 md:p-24 flex gap-x-4 sm:gap-x-6 md:gap-x-8 text-gray-700 animate-fade-in animation-delay-600"
   >
@@ -179,6 +181,7 @@ import { siteConfig } from "../config";
         </a>
       )
     }
+
     {
       siteConfig.social?.linkedin && (
         <a
@@ -212,13 +215,14 @@ import { siteConfig } from "../config";
         </a>
       )
     }
+
     {
-      siteConfig.social?.twitter && (
+      siteConfig.social?.googleScholar && (
         <a
-          href={siteConfig.social.twitter}
+          href={siteConfig.social.googleScholar}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Twitter"
+          aria-label="Google Scholar"
           class="transition-colors duration-300 hover:text-[var(--accent-color)]"
         >
           <svg
@@ -235,13 +239,15 @@ import { siteConfig } from "../config";
           >
             <>
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-              <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+              <path d="M12 3l9 5l-9 5l-9 -5z" />
+              <path d="M7 10.5v4.5c0 1.7 2.2 3 5 3s5 -1.3 5 -3v-4.5" />
+              <path d="M21 8v6" />
             </>
           </svg>
         </a>
       )
     }
+
     {
       siteConfig.social?.github && (
         <a
