@@ -50,7 +50,7 @@ export const siteConfig: {
   }[];
 } = {
   name: "Daman Dogra",
-  title: "MSc Geomatics Student",
+  title: "MSc Geomatics Student, TU Delft",
   description: "Portfolio website of Daman Dogra",
   accentColor: "#1d4ed8",
 
