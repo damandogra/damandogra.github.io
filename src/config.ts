@@ -38,12 +38,14 @@ export const siteConfig: {
   projects: Project[];
   experience: {
     company: string;
+    link: string,
     title: string;
     dateRange: string;
     bullets: string[];
   }[];
   education: {
     school: string;
+    link: string,
     degree: string;
     dateRange: string;
     achievements: string[];
@@ -182,6 +184,7 @@ export const siteConfig: {
   experience: [
     {
       company: "Indian Institute of Technology Roorkee, India",
+      link: "https://www.iitr.ac.in/",
       title: "Project Associate",
       dateRange: "Apr 2023 - Jul 2025",
       bullets: [
@@ -193,6 +196,7 @@ export const siteConfig: {
     },
     {
       company: "National Programme on Technology Enhanced Learning",
+      link: "https://nptel.ac.in/",
       title: "Teaching Assistant",
       dateRange: "Aug 2023 - Sep 2023",
       bullets: [
@@ -200,6 +204,7 @@ export const siteConfig: {
     },
     {
       company: "PLADECO Consultants, India",
+      link: "",
       title: "Junior Urban Planner",
       dateRange: "Oct 2022 - Mar 2023",
       bullets: [
@@ -208,6 +213,7 @@ export const siteConfig: {
     },
     {
       company: "Nangia & Co LLP, India",
+      link: "https://nangia.com/",
       title: "Associate - Government and Public Sector Advisory",
       dateRange: "Jul 2022 - Sep 2022",
       bullets: [
@@ -216,6 +222,7 @@ export const siteConfig: {
     },
     {
       company: "Janaagraha - Center for Citizenship and Democracy, India",
+      link: "https://www.janaagraha.org/",
       title: "Urban Transport and Green Financing Intern",
       dateRange: "Jul 2021 - Aug 2021",
       bullets: [
@@ -227,6 +234,7 @@ export const siteConfig: {
   education: [
     {
       school: "Delft Unveristy of Technology",
+      link: "https://www.tudelft.nl/onderwijs/opleidingen/masters/gm/msc-geomatics",
       degree: "Master of Science in Geomatics",
       dateRange: "2025 - 2027",
       achievements: [
@@ -235,6 +243,7 @@ export const siteConfig: {
     },
     {
       school: "School of Planning and Architecture, India",
+      link: "https://spabhopal.ac.in/Home.aspx",
       degree: "Bachelor of Urban Planning",
       dateRange: "2018 - 2022",
       achievements: [

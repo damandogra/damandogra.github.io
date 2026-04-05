@@ -40,12 +40,15 @@ const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
                         <h3 class="text-lg sm:text-xl font-semibold text-gray-900">
                           {exp.title}
                         </h3>
-                        <p
-                          class="text-base sm:text-lg"
+                        <a
+                          href={exp.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-base sm:text-lg hover:underline"
                           style={`color: ${siteConfig.accentColor}`}
                         >
                           {exp.company}
-                        </p>
+                        </a>
                       </div>
                       <span class="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-0">
                         {exp.dateRange}
