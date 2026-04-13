@@ -1,6 +1,7 @@
 type Project = {
   name: string;
   slug: string;
+  type: "tech" | "thesis";
   description: string;
   link?: string;
   skills: string[];
@@ -88,6 +89,7 @@ export const siteConfig: {
     {
       name: "Point Cloud Classification",
       slug: "point-cloud-classification",
+      type: "tech",
       description:
         "Geometric pipeline to classify LiDAR data into ground, buildings, and vegetation.",
       link: "https://github.com/damandogra/Automatic-classification-of-Point-Cloud",
@@ -148,6 +150,7 @@ export const siteConfig: {
     {
       name: "Transit Accessibility Analysis – Delhi",
       slug: "transit-delhi",
+      type: "tech",
       description:
         "Spatial analysis of public transport accessibility in Delhi using GTFS data and network-based metrics.",
       link: "https://github.com/damandogra/transit_delhi",
@@ -198,6 +201,7 @@ export const siteConfig: {
     {
       name: "Revitalization of Urban Waterfronts through WaTOD",
       slug: "watod-srinagar",
+      type: "thesis",
       description:
         "Water Transit-Oriented Development framework integrating land use and mobility along the Jhelum River in Srinagar.",
       link: "https://niua.in/sites/default/files/2025-07/2023_S2_Revitalization%20of%20Urban.pdf",
