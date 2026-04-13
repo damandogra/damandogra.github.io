@@ -11,12 +11,7 @@ const resultVisuals: { src: string; caption: string }[] = project.resultVisuals 
 const methodVisual = project.gallery?.[0];
 const otherVisuals = project.gallery?.slice(1) ?? [];
 
-const visualCaptions = [
-  "Geometric classification strategy combining PCA-based local features with region growing and sampling consensus to separate planar and non-planar structures.",
-  "Building extraction using planar segmentation and region growing. Roof structures are identified through consistent normals and planar continuity.",
-  "Vegetation classification using neighborhood scattering and sphericity. Dense clustered regions capture tree canopies and other irregular structures.",
-  "Comparison with AHN reference classification showing strong agreement in major structures while also revealing where the workflow overclassifies buildings."
-];
+const visualCaptions: string[] = project.galleryCaptions ?? [];
 ---
 
 <html lang="en">
@@ -219,7 +214,7 @@ const visualCaptions = [
                             />
                           </button>
                           <figcaption class="text-sm text-gray-600 max-w-3xl leading-relaxed border-l-2 border-gray-300 pl-4">
-                            {visualCaptions[i + 1] || ""}
+                            {visualCaptions[i] || ""}
                           </figcaption>
                         </figure>
                       ))}

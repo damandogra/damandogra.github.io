@@ -37,6 +37,7 @@ type Project = {
   discussionVisuals?: string[];
 
   gallery?: string[];
+  galleryCaptions?: string[];
 };
 
 export const siteConfig: {
@@ -145,6 +146,89 @@ export const siteConfig: {
         "/projects/point-cloud/building-workflow.jpg",
         "/projects/point-cloud/vegetation-tuning.jpg",
         "/projects/point-cloud/results-comparison.jpg"
+      ],
+
+      galleryCaptions: [
+        "Geometric classification strategy combining PCA-based local features with region growing and sampling consensus.",
+        "Building extraction using planar segmentation and region growing with normal constraints.",
+        "Vegetation classification using sphericity and neighborhood scattering features.",
+        "Comparison with AHN reference classification showing strong agreement and overclassification zones."
+      ],
+    },
+    {
+      name: "Waste Detection in the Built Environment",
+      slug: "waste-detection-ml",
+      type: "tech",
+      description:
+        "Automatic classification of waste in street-view images using a YOLO-based object detection pipeline.",
+      link: "https://github.com/damandogra/ML_Assignment03_Group03",
+      skills: ["Python", "YOLO", "Computer Vision", "CVAT", "Deep Learning"],
+      cover: "/projects/waste-detection/cover.jpg",
+
+      summary:
+        "This project addresses the automatic classification of waste using 10,000 street-view images. The objective is to build a machine learning pipeline that trains, validates, and tests on data to identify whether an image contains waste and classify it into five predefined categories.",
+
+      context:
+        "Waste detection in the built environment is crucial for maintaining a liveable urban environment. Traditional monitoring methods are labour-intensive, motivating the use of machine learning for automated detection.",
+
+      objective:
+        "To identify whether an image contains waste and classify it into five predefined categories: bulky waste, garbage bag, cardboard, litter, and other.",
+
+      methodology: [
+        "Images were manually annotated in CVAT using five predefined classes, with bounding boxes assigned to visible waste objects",
+        "A temporal dataset split was used to prevent data leakage and simulate real-world deployment",
+        "The YOLO26n model was selected for its lightweight architecture and trained for 100 epochs with early stopping (patience = 20), image size 512 and batch size 8",
+        "Both classification and detection approaches were evaluated; the detection model was selected due to its ability to provide spatial localisation and multi-class predictions",
+        "Predictions were ranked based on highest confidence detection per image, and evaluation was conducted using Precision at 100 (P@100)"
+      ],
+
+      data: [
+        "10,000 street-view images split into training (2844), validation (3064), and testing (4092)",
+        "Five annotated classes: bulky waste, garbage bag, cardboard, litter, and other",
+        "Strong class imbalance with most images containing no waste objects"
+      ],
+
+      analysis: [
+        "The dataset exhibits strong class imbalance, leading to dominance of background samples during training",
+        "This results in reduced recall and a bias toward predicting clean scenes",
+        "Class-wise performance shows garbage bag achieving the highest performance (AP = 0.186), while cardboard and other remain near zero",
+        "Precision remains stable at low recall but drops rapidly as recall increases"
+      ],
+
+      results: [
+        "The model achieves low detection performance (mAP@50: 0.102 on test, mAP@50-95: 0.046)",
+        "P@100 = 0.90, indicating strong performance in ranking images containing waste",
+        "The model is effective for prioritisation tasks despite low detection accuracy"
+      ],
+
+      resultVisuals: [
+        {
+          src: "/projects/waste-detection/confusion-matrix.jpg",
+          caption:
+            "Confusion matrix showing class-wise detection performance on the test dataset, highlighting strong background bias and missed detections."
+        },
+        {
+          src: "/projects/waste-detection/pr-curve.jpg",
+          caption:
+            "Precision–Recall curve showing low recall across all classes, with the garbage bag class achieving the highest performance."
+        }
+      ],
+
+      discussion: [
+        "The dominant error type is false negatives due to class imbalance and low object frequency",
+        "The model is recall-limited rather than precision-limited",
+        "Labelling ambiguity affects evaluation, where correct detections may be penalised due to class mismatch",
+        "Ranking-based evaluation (P@100) remains effective even when detection metrics are low"
+      ],
+
+      gallery: [
+        "/projects/waste-detection/sample-correct.jpg",
+        "/projects/waste-detection/sample-errors.jpg"
+      ],
+
+      galleryCaptions: [
+        "Example of correct detection where the model identifies visible waste objects with high confidence.",
+        "Examples of incorrect detections showing overlapping bounding boxes and missed objects."
       ]
     },
     {
