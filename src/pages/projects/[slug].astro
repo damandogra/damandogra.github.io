@@ -1,7 +1,8 @@
 ---
 import { siteConfig } from "../../config";
-import TechProject from "./pointcloud.astro";
-import ThesisProject from "./WaTOD.astro";
+import TechProject from "../../layouts/projects/pointcloud.astro";
+import ThesisProject from "../../layouts/projects/WaTOD.astro";
+import TransitDelhi from "../../layouts/projects/transit-delhi.astro";
 
 export async function getStaticPaths() {
   return siteConfig.projects.map((project) => ({
@@ -15,6 +16,8 @@ const { project } = Astro.props;
 
 {project.type === "tech" ? (
   <TechProject project={project} />
+) : project.type === "TransitDelhi" ? (
+  <TransitDelhi project={project} />
 ) : (
   <ThesisProject project={project} />
 )}
