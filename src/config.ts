@@ -232,7 +232,7 @@ export const siteConfig: {
       ]
     },
     {
-      name: "Transit Accessibility Map – Delhi",
+      name: "Interactive Transit Accessibility Map of Delhi",
       slug: "transit-delhi",
       type: "TransitDelhi",
       description:
