@@ -152,57 +152,45 @@ export const siteConfig: {
       slug: "transit-delhi",
       type: "TransitDelhi",
       description:
-        "Quantifying public transport equity across Delhi using open GTFS data, multimodal network graphs, and travel-time isochrones — revealing where 20 million residents are underserved.",
+        "Interactive web map of Delhi's public transit network — bus stops, metro lines, and stations visualised with toggleable layers and stop-level popups.",
       link: "https://github.com/damandogra/transit_delhi",
-      skills: ["Python", "GeoPandas", "NetworkX", "OSMnx", "Pandana", "GTFS", "Network Analysis", "GIS"],
+      skills: ["Python", "Flask", "Folium", "OpenStreetMap", "GeoJSON", "GTFS"],
       cover: "/projects/transit-delhi/cover.jpg",
- 
+
       summary:
-        "Built a multimodal pedestrian-transit network for Delhi NCT by combining open GTFS bus data with OSM street geometry. Computed 30-minute travel-time accessibility scores for every node in the network, aggregated results to ward level, and mapped the spatial distribution of transit inequity across the city.",
- 
-      context:
-        "Delhi's public transport network spans buses, Metro, and shared autos — yet daily commutes for millions are shaped less by where people want to go and more by where transit actually reaches. GTFS data for Delhi's bus network is publicly available through the city's Open Transit Data portal, making it possible to reconstruct the full scheduled network and measure its real coverage.",
- 
+        "A Flask web app that loads open OSM and GTFS data and renders it as an interactive Folium map. Users can explore bus stop locations, toggle metro lines and stations, and click any marker to see stop-level attributes.",
+
       objective:
-        "To quantify transit accessibility across Delhi using travel time and network connectivity rather than simple stop-density counts, and to identify the wards and corridors where coverage falls below a meaningful threshold.",
- 
+        "To make Delhi's public transit network spatially legible — combining bus, metro, and boundary data from open sources into a single browsable map.",
+
       methodology: [
-        "Parsed and validated the Delhi GTFS feed (stops.txt, routes.txt, trips.txt, stop_times.txt) using pandas and GeoPandas, filtering duplicate stops and incomplete route entries",
-        "Retrieved the Delhi NCT pedestrian street network from OpenStreetMap via OSMnx and appended transit boarding, in-vehicle, and alighting edges to build a unified multimodal graph",
-        "Weighted walk edges by distance ÷ 1.2 m/s; transit edges by scheduled in-vehicle time; boarding nodes by average route headway derived from stop_times, with a 3-minute transfer penalty",
-        "Used Pandana to compute cumulative accessibility scores — the number of transit stops reachable within a 30-minute travel time — for every node in the network",
-        "Spatially joined node-level scores to Delhi ward boundaries, aggregated by median, and visualised as a choropleth using matplotlib and contextily"
+        "Loaded bus stop nodes from OSM (JSON) with attributes: name, operator, network, wheelchair, shelter, departures board",
+        "Added Delhi Metro lines and stations from GeoJSON files as separate toggleable layers",
+        "Used Folium's MarkerCluster to group dense stop areas and reduce visual noise at city scale",
+        "Rendered the Delhi NCT administrative boundary as a GeoJSON overlay",
+        "Served the map through a Flask route, with a custom HTML legend injected via folium.Element",
       ],
- 
+
       analysis: [
-        "High-accessibility zones align almost perfectly with Metro corridors rather than bus route density — the Metro is driving accessibility outcomes even though buses cover more of the city's area",
-        "Several peripheral wards have high stop counts but poor scores, showing that stop presence without adequate frequency does not translate to usable access within a 30-minute window",
-        "A cluster of north-west Delhi wards scores poorly despite proximity to the outer ring road — the absence of walkable connections from residential streets to stops creates accessibility dead zones even where buses run",
-        "Central and south Delhi wards score 3–4× higher than peripheral areas, confirming a pronounced core–periphery gradient in transit equity"
+        "Bus stops cluster heavily around the central corridors — peripheral areas of Delhi have noticeably lower stop density",
+        "Metro lines connect major corridors but large residential areas in the north-west and south remain without rail coverage",
+        "A significant share of stops lack shelter or wheelchair accessibility data in OSM, reflecting gaps in open data completeness",
       ],
- 
-      results: [" "],
-      resultVisuals: [
-        {
-          src: "/projects/transit-delhi/result-map.jpg",
-          caption:
-            "Ward-level choropleth of median transit accessibility scores across Delhi. Darker wards can reach significantly more of the network within 30 minutes. The gradient from the central corridors to the urban periphery highlights where investment in frequency or feeder routes would have the greatest equity impact."
-        }
-      ],
- 
+
       discussion: [
-        "The methodology is reproducible with any open GTFS feed — the same pipeline can be applied to Bengaluru, Mumbai, or any city publishing open transit data with minimal reconfiguration",
-        "Delhi's GTFS stop_times use estimated constant-speed values rather than measured travel times, which introduces noise in the headway and in-vehicle time calculations; real-time GTFS-RT feeds would improve accuracy",
-        "Incorporating population density and employment data would shift the output from raw connectivity to weighted accessibility, measuring not just how many stops you can reach but how many people or jobs those stops serve",
-        "Transit-oriented development in peripheral zones and targeted frequency increases on low-headway routes serving underserved wards are the two interventions most supported by the analysis"
+        "The project is a starting point — adding frequency data or travel-time analysis would make the map analytically stronger",
+        "OSM data quality varies across the city; stops in outer Delhi often have incomplete or missing attribute tags",
+        "Switching to a frontend framework (Leaflet.js directly) would allow faster load times and more interactive filtering",
       ],
- 
+
+      results: [" "],
+      resultVisuals: [],
+
       gallery: [
-        "/projects/transit-delhi/gtfs-network.jpg",       // 01 — raw GTFS stop network plotted on Delhi NCT
-        "/projects/transit-delhi/multimodal-graph.jpg",   // 02 — combined walk + transit graph
-        "/projects/transit-delhi/isochrones.jpg",         // 03 — 30-min isochrones from sample origins
-        "/projects/transit-delhi/ward-choropleth.jpg"     // 04 — ward-level accessibility choropleth
-      ]
+        "/projects/transit-delhi/methodology.png",   // pipeline diagram
+        "/projects/transit-delhi/data-layers.png",   // 4-panel layer breakdown
+        "/projects/transit-delhi/popup-detail.png",  // popup + cluster UI
+      ],
     },
     {
       name: "Revitalization of Urban Waterfronts through WaTOD",

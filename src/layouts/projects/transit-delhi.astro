@@ -12,10 +12,9 @@ const methodVisual = project.gallery?.[0];
 const otherVisuals = project.gallery?.slice(1) ?? [];
 
 const visualCaptions = [
-  "Stop-level GTFS network plotted across Delhi NCT. Each node represents a bus stop; edges encode the in-vehicle travel time between consecutive stops on a route. Metro interchange nodes are visible as high-degree hubs.",
-  "Multimodal graph combining OSM pedestrian links with transit edges. Walk edges (grey) connect street nodes to the nearest boarding point; transit edges (blue) represent in-vehicle legs weighted by schedule headway.",
-  "30-minute travel-time isochrones computed from a sample of origin nodes across Delhi. Areas shaded darker are reachable from more origins within the threshold — revealing the accessibility gradient from centre to periphery.",
-  "Ward-level choropleth of median accessibility scores. Central and south Delhi wards score 3–4× higher than peripheral areas in the north-west and south-east, exposing the spatial inequality in transit coverage."
+  "Pipeline overview: OSM/GTFS data loaded into a Flask backend, rendered as a Folium map with clustered markers and toggleable layers.",
+  "Four independent map layers — bus stops (clustered), metro lines (GeoJSON polylines), metro stations (circle markers), and the NCT administrative boundary.",
+  "Clicking any marker or cluster opens a popup with stop-level attributes: name, operator, network, wheelchair access, shelter, and departures board availability.",
 ];
 ---
 
@@ -41,21 +40,15 @@ const visualCaptions = [
 
           <div class="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
             <div class="lg:col-span-5">
-              <p
-                class="text-sm font-mono mb-4"
-                style={`color: ${siteConfig.accentColor}`}
-              >
+              <p class="text-sm font-mono mb-4" style={`color: ${siteConfig.accentColor}`}>
                 Project
               </p>
-
               <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] tracking-tight">
                 {project.name}
               </h1>
-
               <p class="mt-6 text-lg sm:text-xl text-gray-600 leading-relaxed max-w-xl">
                 {project.description}
               </p>
-
               {project.skills?.length ? (
                 <div class="flex flex-wrap gap-2 mt-8">
                   {project.skills.map((skill: string) => (
@@ -76,11 +69,7 @@ const visualCaptions = [
                     data-lightbox-src={project.cover}
                     data-lightbox-alt={project.name}
                   >
-                    <img
-                      src={project.cover}
-                      alt={project.name}
-                      class="w-full h-auto object-contain"
-                    />
+                    <img src={project.cover} alt={project.name} class="w-full h-auto object-contain" />
                   </button>
                 </figure>
               ) : (
@@ -118,31 +107,10 @@ const visualCaptions = [
                 <section class="border-t border-gray-200 pt-8">
                   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                     <div class="md:col-span-3">
-                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">
-                        Overview
-                      </h2>
+                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">Overview</h2>
                     </div>
                     <div class="md:col-span-9">
-                      <p class="text-lg sm:text-xl text-gray-800 leading-relaxed max-w-3xl">
-                        {project.summary}
-                      </p>
-                    </div>
-                  </div>
-                </section>
-              ) : null}
-
-              {project.context ? (
-                <section class="border-t border-gray-200 pt-8">
-                  <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div class="md:col-span-3">
-                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">
-                        Context
-                      </h2>
-                    </div>
-                    <div class="md:col-span-9">
-                      <p class="text-base sm:text-lg text-gray-700 leading-relaxed max-w-3xl">
-                        {project.context}
-                      </p>
+                      <p class="text-lg sm:text-xl text-gray-800 leading-relaxed max-w-3xl">{project.summary}</p>
                     </div>
                   </div>
                 </section>
@@ -152,14 +120,10 @@ const visualCaptions = [
                 <section class="border-t border-gray-200 pt-8">
                   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                     <div class="md:col-span-3">
-                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">
-                        Objective
-                      </h2>
+                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">Objective</h2>
                     </div>
                     <div class="md:col-span-9">
-                      <p class="text-base sm:text-lg text-gray-700 leading-relaxed max-w-3xl">
-                        {project.objective}
-                      </p>
+                      <p class="text-base sm:text-lg text-gray-700 leading-relaxed max-w-3xl">{project.objective}</p>
                     </div>
                   </div>
                 </section>
@@ -169,18 +133,13 @@ const visualCaptions = [
                 <section class="border-t border-gray-200 pt-8">
                   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                     <div class="md:col-span-3">
-                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">
-                        Method
-                      </h2>
+                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">Method</h2>
                     </div>
                     <div class="md:col-span-9">
                       <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
                         {methodology.map((item, i) => (
                           <div>
-                            <p
-                              class="text-sm font-mono mb-2"
-                              style={`color: ${siteConfig.accentColor}`}
-                            >
+                            <p class="text-sm font-mono mb-2" style={`color: ${siteConfig.accentColor}`}>
                               0{i + 1}
                             </p>
                             <p class="text-gray-700 leading-relaxed">{item}</p>
@@ -196,11 +155,8 @@ const visualCaptions = [
                 <section class="border-t border-gray-200 pt-10">
                   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                     <div class="md:col-span-3">
-                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">
-                        Visuals
-                      </h2>
+                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">Visuals</h2>
                     </div>
-
                     <div class="md:col-span-9 space-y-10">
                       {methodVisual ? (
                         <figure class="space-y-3">
@@ -210,18 +166,13 @@ const visualCaptions = [
                             data-lightbox-src={methodVisual}
                             data-lightbox-alt={`${project.name} method visual`}
                           >
-                            <img
-                              src={methodVisual}
-                              alt={`${project.name} method visual`}
-                              class="w-full h-auto object-contain rounded-xl"
-                            />
+                            <img src={methodVisual} alt={`${project.name} method visual`} class="w-full h-auto object-contain rounded-xl" />
                           </button>
                           <figcaption class="text-sm text-gray-600 max-w-3xl leading-relaxed border-l-2 border-gray-300 pl-4">
                             {visualCaptions[0]}
                           </figcaption>
                         </figure>
                       ) : null}
-
                       {otherVisuals.map((img: string, i: number) => (
                         <figure class="space-y-3">
                           <button
@@ -230,47 +181,10 @@ const visualCaptions = [
                             data-lightbox-src={img}
                             data-lightbox-alt={`${project.name} visual ${i + 2}`}
                           >
-                            <img
-                              src={img}
-                              alt={`${project.name} visual ${i + 2}`}
-                              class="w-full h-auto object-contain rounded-xl"
-                            />
+                            <img src={img} alt={`${project.name} visual ${i + 2}`} class="w-full h-auto object-contain rounded-xl" />
                           </button>
                           <figcaption class="text-sm text-gray-600 max-w-3xl leading-relaxed border-l-2 border-gray-300 pl-4">
                             {visualCaptions[i + 1] || ""}
-                          </figcaption>
-                        </figure>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-              ) : null}
-
-              {project.results?.length ? (
-                <section class="border-t border-gray-200 pt-8">
-                  <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div class="md:col-span-3">
-                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">
-                        Results
-                      </h2>
-                    </div>
-                    <div class="md:col-span-9">
-                      {resultVisuals.map((item) => (
-                        <figure class="mt-10 space-y-3">
-                          <button
-                            type="button"
-                            class="w-full bg-white border border-gray-200 rounded-2xl p-4 cursor-zoom-in"
-                            data-lightbox-src={item.src}
-                            data-lightbox-alt={`${project.name} result visual`}
-                          >
-                            <img
-                              src={item.src}
-                              alt={`${project.name} result visual`}
-                              class="w-full h-auto object-contain rounded-xl"
-                            />
-                          </button>
-                          <figcaption class="text-sm text-gray-600 max-w-3xl leading-relaxed border-l-2 border-gray-300 pl-4">
-                            {item.caption}
                           </figcaption>
                         </figure>
                       ))}
@@ -283,9 +197,7 @@ const visualCaptions = [
                 <section class="border-t border-gray-200 pt-8">
                   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                     <div class="md:col-span-3">
-                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">
-                        Analysis
-                      </h2>
+                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">Analysis</h2>
                     </div>
                     <div class="md:col-span-9">
                       <ul class="space-y-4 max-w-3xl list-disc pl-5">
@@ -302,9 +214,7 @@ const visualCaptions = [
                 <section class="border-t border-gray-200 pt-8">
                   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                     <div class="md:col-span-3">
-                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">
-                        Reflection
-                      </h2>
+                      <h2 class="text-sm font-mono uppercase tracking-wide text-gray-500">Reflection</h2>
                     </div>
                     <div class="md:col-span-9">
                       <ul class="space-y-4 max-w-3xl list-disc pl-5">
@@ -323,27 +233,15 @@ const visualCaptions = [
       </section>
     </main>
 
-    <div
-      id="lightbox"
-      class="fixed inset-0 z-50 hidden bg-black/80 p-4 sm:p-8"
-      aria-hidden="true"
-    >
+    <div id="lightbox" class="fixed inset-0 z-50 hidden bg-black/80 p-4 sm:p-8" aria-hidden="true">
       <div class="relative flex h-full w-full items-center justify-center">
         <button
           id="lightbox-close"
           type="button"
           class="absolute right-2 top-2 sm:right-4 sm:top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white text-2xl leading-none hover:bg-white/20 transition"
           aria-label="Close image"
-        >
-          ×
-        </button>
-
-        <img
-          id="lightbox-image"
-          src=""
-          alt=""
-          class="max-h-full max-w-full object-contain rounded-xl"
-        />
+        >×</button>
+        <img id="lightbox-image" src="" alt="" class="max-h-full max-w-full object-contain rounded-xl" />
       </div>
     </div>
 
@@ -352,44 +250,25 @@ const visualCaptions = [
       const lightboxImage = document.getElementById("lightbox-image");
       const lightboxClose = document.getElementById("lightbox-close");
       const triggers = document.querySelectorAll("[data-lightbox-src]");
-
       const openLightbox = (src, alt) => {
-        lightboxImage.src = src;
-        lightboxImage.alt = alt || "";
+        lightboxImage.src = src; lightboxImage.alt = alt || "";
         lightbox.classList.remove("hidden");
         document.body.classList.add("overflow-hidden");
         lightbox.setAttribute("aria-hidden", "false");
       };
-
       const closeLightbox = () => {
         lightbox.classList.add("hidden");
-        lightboxImage.src = "";
-        lightboxImage.alt = "";
+        lightboxImage.src = ""; lightboxImage.alt = "";
         document.body.classList.remove("overflow-hidden");
         lightbox.setAttribute("aria-hidden", "true");
       };
-
-      triggers.forEach((trigger) => {
-        trigger.addEventListener("click", () => {
-          openLightbox(
-            trigger.getAttribute("data-lightbox-src"),
-            trigger.getAttribute("data-lightbox-alt")
-          );
-        });
-      });
-
+      triggers.forEach((t) => t.addEventListener("click", () =>
+        openLightbox(t.getAttribute("data-lightbox-src"), t.getAttribute("data-lightbox-alt"))
+      ));
       lightboxClose?.addEventListener("click", closeLightbox);
-
-      lightbox?.addEventListener("click", (event) => {
-        if (event.target === lightbox) {
-          closeLightbox();
-        }
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && !lightbox.classList.contains("hidden")) {
-          closeLightbox();
-        }
+      lightbox?.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !lightbox.classList.contains("hidden")) closeLightbox();
       });
     </script>
   </body>
