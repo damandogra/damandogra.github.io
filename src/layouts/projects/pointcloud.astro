@@ -10,8 +10,6 @@ const resultVisuals: { src: string; caption: string }[] = project.resultVisuals 
 
 const methodVisual = project.gallery?.[0];
 const otherVisuals = project.gallery?.slice(1) ?? [];
-
-const visualCaptions: string[] = project.galleryCaptions ?? [];
 ---
 
 <html lang="en">
@@ -184,37 +182,39 @@ const visualCaptions: string[] = project.galleryCaptions ?? [];
                           <button
                             type="button"
                             class="w-full bg-white border border-gray-200 rounded-2xl p-4 cursor-zoom-in"
-                            data-lightbox-src={methodVisual}
+                            data-lightbox-src={methodVisual.src}
                             data-lightbox-alt={`${project.name} method visual`}
                           >
                             <img
-                              src={methodVisual}
+                              src={methodVisual.src}
                               alt={`${project.name} method visual`}
                               class="w-full h-auto object-contain rounded-xl"
                             />
                           </button>
+
                           <figcaption class="text-sm text-gray-600 max-w-3xl leading-relaxed border-l-2 border-gray-300 pl-4">
-                            {visualCaptions[0]}
+                            {methodVisual.caption}
                           </figcaption>
                         </figure>
                       ) : null}
 
-                      {otherVisuals.map((img: string, i: number) => (
+                      {otherVisuals.map((item: { src: string; caption: string }) => (
                         <figure class="space-y-3">
                           <button
                             type="button"
                             class="w-full bg-white border border-gray-200 rounded-2xl p-4 cursor-zoom-in"
-                            data-lightbox-src={img}
-                            data-lightbox-alt={`${project.name} visual ${i + 2}`}
+                            data-lightbox-src={item.src}
+                            data-lightbox-alt={`${project.name} visual`}
                           >
                             <img
-                              src={img}
-                              alt={`${project.name} visual ${i + 2}`}
+                              src={item.src}
+                              alt={`${project.name} visual`}
                               class="w-full h-auto object-contain rounded-xl"
                             />
                           </button>
+
                           <figcaption class="text-sm text-gray-600 max-w-3xl leading-relaxed border-l-2 border-gray-300 pl-4">
-                            {visualCaptions[i] || ""}
+                            {item.caption}
                           </figcaption>
                         </figure>
                       ))}

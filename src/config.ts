@@ -36,8 +36,10 @@ type Project = {
   discussion?: string[];
   discussionVisuals?: string[];
 
-  gallery?: string[];
-  galleryCaptions?: string[];
+  gallery?: {
+    src: string;
+    caption: string;
+  }[];
 };
 
 export const siteConfig: {
@@ -142,18 +144,23 @@ export const siteConfig: {
       ],
 
       gallery: [
-        "/projects/point-cloud/method-diagram-1.jpg",
-        "/projects/point-cloud/building-workflow.jpg",
-        "/projects/point-cloud/vegetation-tuning.jpg",
-        "/projects/point-cloud/results-comparison.jpg"
-      ],
-
-      galleryCaptions: [
-        "Geometric classification strategy combining PCA-based local features with region growing and sampling consensus.",
-        "Building extraction using planar segmentation and region growing with normal constraints.",
-        "Vegetation classification using sphericity and neighborhood scattering features.",
-        "Comparison with AHN reference classification showing strong agreement and overclassification zones."
-      ],
+        {
+          src: "/projects/point-cloud/method-diagram-1.jpg",
+          caption: "Geometric classification strategy combining PCA-based local features with region growing and sampling consensus."
+        },
+        {
+          src: "/projects/point-cloud/building-workflow.jpg",
+          caption: "Building extraction using planar segmentation and region growing with normal constraints."
+        },
+        {
+          src: "/projects/point-cloud/vegetation-tuning.jpg",
+          caption: "Vegetation classification using sphericity and neighborhood scattering features."
+        },
+        {
+          src: "/projects/point-cloud/results-comparison.jpg",
+          caption: "Comparison with AHN reference classification showing strong agreement and overclassification zones."
+        }
+      ]
     },
     {
       name: "Waste Detection in the Built Environment",
@@ -222,13 +229,14 @@ export const siteConfig: {
       ],
 
       gallery: [
-        "/projects/waste-detection/sample-correct.jpg",
-        "/projects/waste-detection/sample-errors.jpg"
-      ],
-
-      galleryCaptions: [
-        "Example of correct detection where the model identifies visible waste objects with high confidence.",
-        "Examples of incorrect detections showing overlapping bounding boxes and missed objects."
+        {
+          src: "/projects/waste-detection/sample-correct.jpg",
+          caption: "Example of correct detection where the model identifies visible waste objects with high confidence."
+        },
+        {
+          src: "/projects/waste-detection/sample-errors.jpg",
+          caption: "False positive: non-waste object incorrectly classified as a garbage bag with near-zero confidence."
+        }
       ]
     },
     {
@@ -271,10 +279,19 @@ export const siteConfig: {
       resultVisuals: [],
 
       gallery: [
-        "/projects/transit-delhi/methodology.png",   // pipeline diagram
-        "/projects/transit-delhi/data-layers.png",   // 4-panel layer breakdown
-        "/projects/transit-delhi/popup-detail.png",  // popup + cluster UI
-      ],
+        {
+          src: "/projects/transit-delhi/methodology.png",
+          caption: "Pipeline for integrating OSM and GTFS data into the interactive map."
+        },
+        {
+          src: "/projects/transit-delhi/data-layers.png",
+          caption: "Layer structure showing bus stops, metro lines, and stations."
+        },
+        {
+          src: "/projects/transit-delhi/popup-detail.png",
+          caption: "Interactive popup showing stop-level attributes and clustering behavior."
+        }
+      ]
     },
     {
       name: "Revitalization of Urban Waterfronts through WaTOD",

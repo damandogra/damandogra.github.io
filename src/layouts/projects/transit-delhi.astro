@@ -10,12 +10,6 @@ const resultVisuals: { src: string; caption: string }[] = project.resultVisuals 
 
 const methodVisual = project.gallery?.[0];
 const otherVisuals = project.gallery?.slice(1) ?? [];
-
-const visualCaptions = [
-  "Pipeline overview: OSM/GTFS data loaded into a Flask backend, rendered as a Folium map with clustered markers and toggleable layers.",
-  "Four independent map layers — bus stops (clustered), metro lines (GeoJSON polylines), metro stations (circle markers), and the NCT administrative boundary.",
-  "Clicking any marker or cluster opens a popup with stop-level attributes: name, operator, network, wheelchair access, shelter, and departures board availability.",
-];
 ---
 
 <html lang="en">
@@ -163,28 +157,28 @@ const visualCaptions = [
                           <button
                             type="button"
                             class="w-full bg-white border border-gray-200 rounded-2xl p-4 cursor-zoom-in"
-                            data-lightbox-src={methodVisual}
+                            data-lightbox-src={methodVisual.src}
                             data-lightbox-alt={`${project.name} method visual`}
                           >
-                            <img src={methodVisual} alt={`${project.name} method visual`} class="w-full h-auto object-contain rounded-xl" />
+                            <img src={methodVisual.src} alt={`${project.name} method visual`} class="w-full h-auto object-contain rounded-xl" />
                           </button>
                           <figcaption class="text-sm text-gray-600 max-w-3xl leading-relaxed border-l-2 border-gray-300 pl-4">
-                            {visualCaptions[0]}
+                            {methodVisual.caption}
                           </figcaption>
                         </figure>
                       ) : null}
-                      {otherVisuals.map((img: string, i: number) => (
+                      {otherVisuals.map((item: { src: string; caption: string }) => (
                         <figure class="space-y-3">
                           <button
                             type="button"
                             class="w-full bg-white border border-gray-200 rounded-2xl p-4 cursor-zoom-in"
-                            data-lightbox-src={img}
-                            data-lightbox-alt={`${project.name} visual ${i + 2}`}
+                            data-lightbox-src={item.src}
+                            data-lightbox-alt={`${project.name} visual`}
                           >
-                            <img src={img} alt={`${project.name} visual ${i + 2}`} class="w-full h-auto object-contain rounded-xl" />
+                            <img src={item.src} alt={`${project.name} visual`} class="w-full h-auto object-contain rounded-xl" />
                           </button>
                           <figcaption class="text-sm text-gray-600 max-w-3xl leading-relaxed border-l-2 border-gray-300 pl-4">
-                            {visualCaptions[i + 1] || ""}
+                            {item.caption}
                           </figcaption>
                         </figure>
                       ))}
