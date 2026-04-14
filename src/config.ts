@@ -84,7 +84,8 @@ export const siteConfig: {
   },
 
   aboutMe:
-    "Experience in 3D reconstruction, point cloud processing, and building geospatial data pipelines. Interested in scalable 3D data workflows.",
+    "I develop geospatial data pipelines and spatial models that integrate heterogeneous datasets to extract, structure, and analyze urban information, supporting scenario-based decision-making in spatial planning.",
+    // "Experience in 3D reconstruction, point cloud processing, and building geospatial data pipelines. Interested in scalable 3D data workflows.",
 
   skills: ["Python", "C++", "PostgreSQL", "PostGIS", "Docker", "QGIS"],
 
