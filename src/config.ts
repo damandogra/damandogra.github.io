@@ -4,6 +4,7 @@ type Project = {
   type: "tech" | "thesis" | "TransitDelhi";
   description: string;
   link?: string;
+  linklabel?: string; 
   skills: string[];
   cover?: string;
 
@@ -97,6 +98,7 @@ export const siteConfig: {
       description:
         "Geometric pipeline to classify LiDAR data into ground, buildings, and vegetation.",
       link: "https://github.com/damandogra/Automatic-classification-of-Point-Cloud",
+      linklabel: "Source code",
       skills: ["Python", "LiDAR", "PCA", "KD-Tree"],
       cover: "/projects/point-cloud/cover.jpg",
 
@@ -170,7 +172,8 @@ export const siteConfig: {
       description:
         "Automatic classification of waste in street-view images using a YOLO-based object detection pipeline.",
       link: "https://github.com/damandogra/ML_Assignment03_Group03",
-      skills: ["Python", "YOLO", "Computer Vision", "CVAT", "Deep Learning"],
+      linklabel: "Source code",
+      skills: ["Machine Learning","Python", "Computer Vision"],
       cover: "/projects/waste-detection/cover.jpg",
 
       summary:
@@ -247,6 +250,7 @@ export const siteConfig: {
       description:
         "Interactive web map of Delhi's public transit network — bus stops, metro lines, and stations visualised with toggleable layers and stop-level popups.",
       link: "https://github.com/damandogra/transit_delhi",
+      linklabel: "Source code",
       skills: ["Python", "Flask", "Folium", "OpenStreetMap", "GeoJSON", "GTFS"],
       cover: "/projects/transit-delhi/cover.jpg",
 
@@ -396,6 +400,56 @@ export const siteConfig: {
       discussionVisuals: [
         "/projects/watod/12-multimodal.jpg",
         "/projects/watod/13-river-edge.jpg"
+      ],
+
+      gallery: []
+    },
+    {
+      name: "BIM to Geo Conversion via Voxelisation",
+      slug: "bim2geo",
+      type: "tech",
+      description:
+        "C++ pipeline that converts IFC building models into CityJSON by voxelising geometry and extracting semantic room volumes.",
+      link: "https://github.com/damandogra/BIM2Geo",
+      linklabel: "Source code",
+      skills: ["C++", "CGAL", "IFC", "CityJSON", "Voxelisation"],
+      cover: "/projects/bim2geo/cover.png",
+
+      summary:
+        "Built a full voxel-based conversion pipeline that takes an IFC building model, rasterises its geometry into a 3D voxel grid, detects and labels interior room volumes, and writes a semantically structured CityJSON output — bridging BIM and geospatial data formats using purely geometric operations.",
+
+      objective:
+        "To convert IFC building models into valid CityJSON by voxelising wall, slab, roof, window, and door geometry; detecting enclosed interior spaces via flood-fill; and filtering spurious volumes using width and size thresholds.",
+
+      methodology: [
+        "IFC-to-OBJ conversion using IfcOpenShell's IfcConvert, filtering structural elements and excluding furnishings, openings, and site geometry",
+        "OBJ parsing and axis-aligned bounding box construction to define the voxel grid extent",
+        "Solid voxelisation using ray casting per voxel column to mark interior versus exterior cells",
+        "Room detection using flood-fill region growing from interior seed voxels, constrained by wall boundaries",
+        "Volume and width filtering via compile-time thresholds to remove corridor artefacts and thin gaps",
+        "Surface extraction and CityJSON serialisation with per-room semantic labelling"
+      ],
+
+      analysis: [
+        "Voxel resolution has a strong non-linear effect on room count: coarse grids merge rooms, fine grids fragment them",
+        "Width-based filtering (min_width) outperformed volume-only filtering for removing thin corridor artefacts",
+        "Buildings with complex floor plans require smaller voxel sizes, significantly increasing runtime",
+        "Open-plan spaces and mezzanines remained challenging due to ambiguous enclosure boundaries"
+      ],
+
+      results: [
+        "Successfully reconstructed room layouts for two test buildings — a residential duplex and a wellness centre",
+        "A voxel size of 0.25 m with min_width = 0.3 m produced the most accurate room segmentation",
+        "False merges and over-segmentation both minimised at optimal resolution"
+      ],
+
+      resultVisuals: [],
+
+      discussion: [
+        "The modular header-per-subsystem architecture made testing each stage in isolation straightforward",
+        "Compile-time filter constants require a rebuild per experiment; runtime parameters would improve iteration speed",
+        "The pipeline assumes watertight OBJ meshes — IFC models with incomplete geometry caused ray-casting artefacts",
+        "A KD-tree or spatial hash could replace the dense grid for large buildings to reduce memory usage"
       ],
 
       gallery: []

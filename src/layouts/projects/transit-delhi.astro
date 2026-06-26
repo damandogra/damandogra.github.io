@@ -87,7 +87,7 @@ const otherVisuals = project.gallery?.slice(1) ?? [];
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition"
                 >
-                  <span>Open project</span>
+                  <span>{project.linkLabel ?? "Open project"}</span>
                   <span>↗</span>
                 </a>
               ) : null}
