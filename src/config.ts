@@ -438,12 +438,22 @@ export const siteConfig: {
       ],
 
       results: [
-        "Successfully reconstructed room layouts for two test buildings — a residential duplex and a wellness centre",
-        "A voxel size of 0.25 m with min_width = 0.3 m produced the most accurate room segmentation",
-        "False merges and over-segmentation both minimised at optimal resolution"
+        "Pipeline successfully produces valid CityJSON 2.0 output, confirmed with cjval",
+        "Room layouts reconstructed for two buildings: Sama Wellness Centre (50 rooms) and Duplex (20 rooms)",
+        "Width-based filtering (min_width = 0.3 m) brought room counts close to reality at fine resolutions — e.g. ~50 rooms at voxel size 0.25 m for the Wellness Centre",
+        "Room count remains sensitive to voxel size with no single parameter setting that generalises across buildings"
       ],
 
-      resultVisuals: [],
+      resultVisuals: [
+        {
+          src: "/projects/bim2geo/fig3-sweep.png",
+          caption: "Voxel size sweep showing recovered room count for the Wellness Centre and Duplex. Room count is unstable across resolutions, disproving the plateau hypothesis."
+        },
+        {
+          src: "/projects/bim2geo/fig5-minwidth.png",
+          caption: "Effect of min_width = 0.3 m filtering at fine resolutions. Width-based filtering brings the room count substantially closer to ground truth compared to no thresholding."
+        }
+      ],
 
       discussion: [
         "The modular header-per-subsystem architecture made testing each stage in isolation straightforward",
@@ -451,8 +461,17 @@ export const siteConfig: {
         "The pipeline assumes watertight OBJ meshes — IFC models with incomplete geometry caused ray-casting artefacts",
         "A KD-tree or spatial hash could replace the dense grid for large buildings to reduce memory usage"
       ],
-
-      gallery: []
+      
+      gallery: [
+        {
+          src: "/projects/bim2geo/fig1-zslice.png",
+          caption: "Horizontal Z-slice of the voxel grid for the Sama Wellness Centre. Room labels assigned by flood-fill are visible as distinct numeric regions separated by filled wall voxels."
+        },
+        {
+          src: "/projects/bim2geo/fig2-comparison.png",
+          caption: "Comparison between the original IFC model and the voxel-based CityJSON reconstruction. The envelope and room subdivisions are preserved, with characteristic boxy artefacts from the discrete voxel grid."
+        }
+      ]
     }
   ],
 
