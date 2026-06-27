@@ -315,6 +315,58 @@ export const siteConfig: {
       ]
     },
     {
+      name: "Urban Green Space Connectivity",
+      slug: "urban-green-space",
+      type: "tech",
+      description:
+        "Spatial analysis of urban green space accessibility, ecological quality, and connectivity across Delft and Yuexiu (Guangzhou) using a reproducible R pipeline and S-MCDA framework.",
+      link: "https://github.com/damandogra/Urban-Green-Space-Connectivity",
+      linklabel: "Source code",
+      skills: ["R", "QGIS", "OSM", "GBIF", "Spatial Analysis", "MCDA"],
+      cover: "/projects/urban-green-space/cover.png",
+
+      summary:
+        "Built a fully reproducible spatial analytics pipeline in R to assess urban green space quality across two contrasting cities — Delft (Netherlands) and Yuexiu District, Guangzhou (China). The framework integrates accessibility, ecological quality, spatial justice, and connectivity into a Spatial Multi-Criteria Decision Analysis (S-MCDA) to identify priority areas for nature-based interventions.",
+
+      objective:
+        "To evaluate urban green space quality through four complementary dimensions — accessibility, ecological quality, spatial justice, and connectivity — and integrate them into a spatial decision-support framework that identifies where nature-based solutions are most urgently needed.",
+
+      methodology: [
+        "Accessibility assessed via green space per capita, 300 m and 500 m Euclidean buffer coverage, mean nearest-green distance, and walk-network access point intersection",
+        "Ecological quality evaluated through OSM green space typology classification, NDVI zonal statistics from Sentinel-2, GBIF species observation density normalised by patch area, and blue-green balance index",
+        "Spatial justice measured using Lorenz curve and Gini coefficient of green space per capita, bivariate choropleth of population vs. green density, and socioeconomic correlation (CBS income for Delft; VIIRS night-light as proxy for Yuexiu)",
+        "Connectivity quantified via fragmentation metrics (NP, MPS, ENN), BFS graph connectivity on green patch centroids, betweenness centrality, and isolated patch identification",
+        "S-MCDA aggregated all four dimensions into a composite urgency score (accessibility 30%, ecological quality 25%, connectivity 25%, spatial justice 20%) to produce priority tier maps and proposed green corridor overlays",
+        "Full pipeline orchestrated in R with all paths centralised in 00_config.R; report rendered with Quarto and published via GitHub Pages"
+      ],
+
+      analysis: [
+        "Delft has substantially higher green space per capita (up to 400 m²/person) vs Yuexiu (up to 10 m²/person), largely explained by a 5× population density difference rather than absence of green space",
+        "Delft's Gini coefficient (0.605) indicates more equitable distribution than Yuexiu (0.719), though neither city shows significant income–green space correlation",
+        "Delft operates as a dense network of many small, closely spaced patches; Yuexiu relies on fewer but substantially larger parks that remain spatially isolated from one another",
+        "Connectivity poses the highest urgency in both cities under the MCDA, with historical urban cores scoring highest for intervention priority in both Delft and Yuexiu",
+        "GBIF observations show inverse density–area relationships in both cities, likely reflecting sampling artefacts rather than true biodiversity differences"
+      ],
+
+      results: [
+        "Delft outperforms Yuexiu across all four dimensions at neighbourhood scale, but direct comparison is constrained by a 6× population density difference and scale mismatch",
+        "Yuexiu's MCDA priority zones are spatially fragmented, reflecting uneven rapid urbanisation; Delft's high-priority zones are more concentrated around the historic rail corridor",
+        "Proposed green corridor overlays identify isolated patches requiring stepping-stone interventions, with substantially more corridors needed in Yuexiu than Delft",
+        "The pipeline is fully reproducible using globally available open datasets (OSM, WorldPop, GBIF, Sentinel-2, VIIRS) and can be transferred to other urban contexts via 00_config.R"
+      ],
+
+      resultVisuals: [],
+
+      discussion: [
+        "OSM completeness is lower in Chinese cities than in Western Europe, introducing potential bias in typology and connectivity metrics for Yuexiu",
+        "MCDA weights were assigned by judgement rather than derived analytically — sensitivity analysis across weight combinations would improve robustness",
+        "The priority tier maps represent relative ranking within each city, not absolute urgency; they identify least well-performing areas rather than genuine crisis zones",
+        "Future work should incorporate urban cooling and biodiversity effects of blue-green infrastructure, particularly relevant given Delft's canal-rich character and Yuexiu's position within the Pearl River Delta"
+      ],
+
+      gallery: []
+    },
+    {
       name: "Interactive Transit Accessibility Map of Delhi",
       slug: "transit-delhi",
       type: "TransitDelhi",
