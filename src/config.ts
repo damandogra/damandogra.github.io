@@ -416,32 +416,34 @@ export const siteConfig: {
       cover: "/projects/bim2geo/cover.png",
 
       summary:
-        "Built a full voxel-based conversion pipeline that takes an IFC building model, rasterises its geometry into a 3D voxel grid, detects and labels interior room volumes, and writes a semantically structured CityJSON output — bridging BIM and geospatial data formats using purely geometric operations.",
+        "Built a voxel-based pipeline in C++ that converts IFC building models into CityJSON 2.0. The pipeline voxelises structural geometry, classifies voxels as filled, exterior, or interior via BFS flood-fill, extracts per-room and envelope shells, and writes a semantically structured output with Building, BuildingStorey, and BuildingRoom hierarchy.",
 
       objective:
         "To convert IFC building models into valid CityJSON by voxelising wall, slab, roof, window, and door geometry; detecting enclosed interior spaces via flood-fill; and filtering spurious volumes using width and size thresholds.",
 
       methodology: [
-        "IFC-to-OBJ conversion using IfcOpenShell's IfcConvert, filtering structural elements and excluding furnishings, openings, and site geometry",
-        "OBJ parsing and axis-aligned bounding box construction to define the voxel grid extent",
-        "Solid voxelisation using ray casting per voxel column to mark interior versus exterior cells",
-        "Room detection using flood-fill region growing from interior seed voxels, constrained by wall boundaries",
-        "Volume and width filtering via compile-time thresholds to remove corridor artefacts and thin gaps",
-        "Surface extraction and CityJSON serialisation with per-room semantic labelling"
+        "IFC-to-OBJ conversion using IfcOpenShell's IfcConvert, retaining walls, slabs, roofs, windows and doors while excluding furnishings, openings, stairs and railings",
+        "OBJ parsing into Triangle and Mesh structures; bounding box computed only from retained geometry to avoid inflating the grid",
+        "Voxel grid initialisation with one-voxel padding on all sides, ensuring the corner voxel is guaranteed exterior and the flood fill can move freely around the building",
+        "Solid voxelisation using CGAL triangle-voxel intersection tests (Iso_cuboid_3), marking intersected cells as FILLED",
+        "BFS flood-fill from corner voxel to label exterior; remaining unlabelled voxels seeded individually to assign unique room IDs",
+        "Room filtering by minimum volume (6 m³) and minimum width (0.3 m via erosion passes) to remove wall cavities and thin gaps",
+        "Surface extraction by checking all six face-neighbours of each FILLED voxel, generating quads where adjacent to exterior or room voxels, split into triangles with consistent winding",
+        "CityJSON 2.0 serialisation with Building → BuildingStorey → BuildingRoom hierarchy; storeys grouped by minimum z-coordinate with voxel-size tolerance"
       ],
 
       analysis: [
-        "Voxel resolution has a strong non-linear effect on room count: coarse grids merge rooms, fine grids fragment them",
-        "Width-based filtering (min_width) outperformed volume-only filtering for removing thin corridor artefacts",
-        "Buildings with complex floor plans require smaller voxel sizes, significantly increasing runtime",
-        "Open-plan spaces and mezzanines remained challenging due to ambiguous enclosure boundaries"
+        "Room count is highly unstable with respect to voxel size — no plateau was found, disproving the initial stability hypothesis",
+        "Volume-based filtering (min_volume = 6 m³) pushed room counts below ground truth in most cases, making results worse rather than better",
+        "Width-based filtering (min_width = 0.3 m) at fine resolutions brought counts closer to reality — e.g. ~50 rooms at 0.25 m for the Wellness Centre vs ground truth of 50",
+        "No single parameter setting generalises across buildings: the voxel size that works for the Wellness Centre does not work for the Duplex",
       ],
 
       results: [
-        "Pipeline successfully produces valid CityJSON 2.0 output, confirmed with cjval",
-        "Room layouts reconstructed for two buildings: Sama Wellness Centre (50 rooms) and Duplex (20 rooms)",
-        "Width-based filtering (min_width = 0.3 m) brought room counts close to reality at fine resolutions — e.g. ~50 rooms at voxel size 0.25 m for the Wellness Centre",
-        "Room count remains sensitive to voxel size with no single parameter setting that generalises across buildings"
+        "Pipeline produces valid CityJSON 2.0 output confirmed with cjval, with full Building → BuildingStorey → BuildingRoom semantic hierarchy",
+        "Tested on two IFC models: Sama Wellness Centre (50 rooms ground truth) and Duplex (20 rooms ground truth)",
+        "Width-based filtering at voxel size 0.25 m recovered ~50 rooms for the Wellness Centre, closely matching ground truth",
+        "Room count remains chaotic across voxel sizes with no universally optimal parameter — explicit inspection of input and output remains necessary",
       ],
 
       resultVisuals: [
@@ -456,10 +458,10 @@ export const siteConfig: {
       ],
 
       discussion: [
-        "The modular header-per-subsystem architecture made testing each stage in isolation straightforward",
-        "Compile-time filter constants require a rebuild per experiment; runtime parameters would improve iteration speed",
-        "The pipeline assumes watertight OBJ meshes — IFC models with incomplete geometry caused ray-casting artefacts",
-        "A KD-tree or spatial hash could replace the dense grid for large buildings to reduce memory usage"
+        "Compile-time filter constants (min_volume, min_width) require a full rebuild to change — runtime parameters would significantly improve iteration speed during experiments",
+        "The pipeline assumes watertight OBJ geometry; IFC models with missing or incomplete elements caused ray-casting artefacts and spurious room detections",
+        "Boxy voxel artefacts in the CityJSON output could be reduced with post-processing methods such as Marching Cubes, Dual Contouring, or mesh simplification",
+        "Parameter sweeps should be extended to multiple axes (voxel size, min_volume, min_width simultaneously) for a more complete stability analysis",
       ],
       
       gallery: [
