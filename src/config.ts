@@ -650,7 +650,7 @@ export const siteConfig: SiteConfig = {
       company: "EEFIT – Earthquake Engineering Field Investigation Team",
       link: "https://www.linkedin.com/company/the-earthquake-engineering-field-investigation-team-eefit/",
       title: "Working Student",
-      dateRange: "Sep 2026 - Present",
+      dateRange: "Aug 2026 - Present",
       bullets: [
         "Working on the CHASE-funded Hatay (Türkiye) earthquake project.",
         "Ran InSAR coherence analysis in SARPROZ to flag potentially damaged sites for the field survey team.",
