@@ -1,0 +1,272 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import ProjectFigure from "../components/ProjectFigure.astro";
+import Lightbox from "../components/Lightbox.astro";
+import Icon from "../components/Icon.astro";
+import { projectTypeLabel, type Project, type Visual } from "../config";
+
+interface Props {
+  project: Project;
+  prev?: Project;
+  next?: Project;
+}
+
+const { project, prev, next } = Astro.props;
+
+type Section = {
+  id: string;
+  title: string;
+  text?: string;
+  items?: string[];
+  style?: "steps" | "bullets";
+  visuals?: Visual[];
+};
+
+const nonEmpty = (arr?: string[]) => (arr ?? []).filter((s) => s && s.trim().length > 0);
+
+const allSections: Section[] = [
+  { id: "overview", title: "Overview", text: project.summary, visuals: project.summaryVisuals },
+  { id: "context", title: "Context", text: project.context, visuals: project.contextVisuals },
+  { id: "objective", title: "Objective", text: project.objective, visuals: project.objectiveVisuals },
+  {
+    id: "method",
+    title: "Method",
+    items: nonEmpty(project.methodology),
+    style: "steps",
+    visuals: project.methodologyVisuals,
+  },
+  { id: "data", title: "Data", items: nonEmpty(project.data), style: "bullets" },
+  {
+    id: "process",
+    title: "Process",
+    items: nonEmpty(project.process),
+    style: "steps",
+    visuals: project.processVisuals,
+  },
+  { id: "visuals", title: "Visuals", visuals: project.gallery },
+  {
+    id: "analysis",
+    title: "Analysis",
+    items: nonEmpty(project.analysis),
+    style: "bullets",
+    visuals: project.analysisVisuals,
+  },
+  {
+    id: "results",
+    title: "Results",
+    items: nonEmpty(project.results),
+    style: "bullets",
+    visuals: project.resultVisuals,
+  },
+  {
+    id: "reflection",
+    title: "Reflection",
+    items: nonEmpty(project.discussion),
+    style: "bullets",
+    visuals: project.discussionVisuals,
+  },
+];
+const sections = allSections.filter((s) => s.text || s.items?.length || s.visuals?.length);
+
+const links = [
+  project.demo && { href: project.demo, label: project.demoLabel ?? "Live demo", primary: true },
+  project.link && { href: project.link, label: project.linkLabel ?? "Open project", primary: !project.demo },
+].filter(Boolean) as { href: string; label: string; primary: boolean }[];
+---
+
+<BaseLayout title={project.name} description={project.description} type="article" variant="page">
+  <article>
+    <!-- Header -->
+    <header class="border-b border-line">
+      <div class="container-page py-10 sm:py-14">
+        <a
+          href="/#projects"
+          class="inline-flex items-center gap-2 text-sm text-muted hover:text-accent transition-colors"
+        >
+          <Icon name="arrow-left" class="h-4 w-4" />
+          Back to projects
+        </a>
+
+        <div class="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-14 items-start">
+          <div class="lg:col-span-5">
+            <p class="text-sm font-medium text-accent">{projectTypeLabel[project.type]}</p>
+            <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight text-ink">
+              {project.name}
+            </h1>
+            <p class="mt-5 text-base sm:text-lg leading-relaxed text-muted">{project.description}</p>
+
+            {
+              links.length > 0 && (
+                <div class="mt-7 flex flex-wrap gap-3">
+                  {links.map((l) => (
+                    <a
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class={
+                        l.primary
+                          ? "inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent hover:opacity-90 transition-opacity"
+                          : "inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-ink hover:border-accent hover:text-accent transition-colors"
+                      }
+                    >
+                      {l.label}
+                      <Icon name="arrow-up-right" class="h-4 w-4" />
+                    </a>
+                  ))}
+                </div>
+              )
+            }
+
+            {
+              project.skills.length > 0 && (
+                <ul class="mt-7 flex flex-wrap gap-2" aria-label="Tools and methods">
+                  {project.skills.map((s) => (
+                    <li class="chip">{s}</li>
+                  ))}
+                </ul>
+              )
+            }
+          </div>
+
+          <div class="lg:col-span-7">
+            {project.cover && <ProjectFigure visual={project.cover} alt={project.name} eager bare />}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="container-page grid gap-10 py-12 sm:py-16 lg:grid-cols-12 lg:gap-14">
+      <aside class="hidden lg:block lg:col-span-3">
+        <nav class="sticky top-24" aria-label="On this page">
+          <p class="text-xs font-semibold uppercase tracking-wider text-muted">On this page</p>
+          <ol class="mt-4 space-y-2 border-l border-line text-sm">
+            {
+              sections.map((s) => (
+                <li>
+                  <a
+                    href={`#${s.id}`}
+                    data-toc-link={s.id}
+                    class="-ml-px block border-l-2 border-transparent pl-4 text-muted hover:text-ink transition-colors data-[active=true]:border-accent data-[active=true]:text-accent"
+                  >
+                    {s.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="lg:col-span-9 space-y-14 sm:space-y-16">
+        {
+          sections.map((s) => (
+            <section id={s.id} class="scroll-mt-24 border-t border-line pt-8" data-toc-section>
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-muted">{s.title}</h2>
+
+              <div class="mt-5 space-y-8">
+                {s.text && (
+                  <p
+                    class={
+                      s.id === "overview"
+                        ? "max-w-3xl text-lg sm:text-xl leading-relaxed text-ink"
+                        : "max-w-3xl text-base sm:text-lg leading-relaxed text-ink-soft"
+                    }
+                  >
+                    {s.text}
+                  </p>
+                )}
+
+                {s.items && s.items.length > 0 && s.style === "steps" && (
+                  <ol class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                    {s.items.map((item, i) => (
+                      <li>
+                        <p class="text-sm font-semibold text-accent">{String(i + 1).padStart(2, "0")}</p>
+                        <p class="mt-1.5 leading-relaxed text-ink-soft">{item}</p>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+
+                {s.items && s.items.length > 0 && s.style === "bullets" && (
+                  <ul class="max-w-3xl space-y-3">
+                    {s.items.map((item) => (
+                      <li class="flex gap-3 leading-relaxed text-ink-soft">
+                        <span class="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {s.visuals && s.visuals.length > 0 && (
+                  <div class="space-y-10">
+                    {s.visuals.map((v) => (
+                      <ProjectFigure visual={v} alt={`${project.name} — ${s.title.toLowerCase()} figure`} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Prev / next -->
+    <nav class="border-t border-line bg-surface" aria-label="More projects">
+      <div class="container-page grid gap-4 py-10 sm:grid-cols-2">
+        {
+          prev ? (
+            <a
+              href={`/projects/${prev.slug}/`}
+              class="group rounded-2xl border border-line bg-bg p-5 transition-colors hover:border-accent"
+            >
+              <span class="inline-flex items-center gap-2 text-xs text-muted">
+                <Icon name="arrow-left" class="h-3.5 w-3.5" /> Previous project
+              </span>
+              <span class="mt-2 block font-semibold text-ink group-hover:text-accent">{prev.name}</span>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next && (
+            <a
+              href={`/projects/${next.slug}/`}
+              class="group rounded-2xl border border-line bg-bg p-5 text-right transition-colors hover:border-accent"
+            >
+              <span class="inline-flex items-center gap-2 text-xs text-muted">
+                Next project <Icon name="arrow-right" class="h-3.5 w-3.5" />
+              </span>
+              <span class="mt-2 block font-semibold text-ink group-hover:text-accent">{next.name}</span>
+            </a>
+          )
+        }
+      </div>
+    </nav>
+  </article>
+
+  <Lightbox />
+</BaseLayout>
+
+<script>
+  // Highlight the current section in the "On this page" list.
+  const links = new Map<string, HTMLElement>();
+  document.querySelectorAll<HTMLElement>("[data-toc-link]").forEach((a) => links.set(a.dataset.tocLink!, a));
+  if (links.size && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            links.forEach((a) => a.removeAttribute("data-active"));
+            links.get(entry.target.id)?.setAttribute("data-active", "true");
+          }
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px" },
+    );
+    document.querySelectorAll("[data-toc-section]").forEach((s) => observer.observe(s));
+  }
+</script>

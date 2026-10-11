@@ -1,78 +1,115 @@
 ---
+import Icon from "./Icon.astro";
 import { siteConfig } from "../config";
 
-const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
-const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
-const hasEducation = siteConfig.education && siteConfig.education.length > 0;
+interface Props {
+  variant?: "home" | "page";
+}
+const { variant = "home" } = Astro.props;
+
+const links = [
+  { href: "/#about", label: "About" },
+  siteConfig.projects.length && { href: "/#projects", label: "Projects" },
+  siteConfig.experience.length && { href: "/#experience", label: "Experience" },
+  siteConfig.education.length && { href: "/#education", label: "Education" },
+  { href: "/#contact", label: "Contact" },
+].filter(Boolean) as { href: string; label: string }[];
+
+const initials = siteConfig.name
+  .split(" ")
+  .map((p) => p[0])
+  .join("");
 ---
 
 <header
-  id="header"
-  class="fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300"
+  id="site-header"
+  class="sticky top-0 z-50 border-b border-transparent transition-colors duration-300 data-[scrolled=true]:border-line data-[scrolled=true]:bg-bg/85 data-[scrolled=true]:backdrop-blur-md"
 >
-  <nav class="max-w-7xl mx-auto px-8 py-4">
-    <ul class="flex items-center gap-8 justify-center">
-      <li>
-        <a
-          href="#about"
-          class="text-gray-700 hover:text-black transition-colors font-medium"
-        >
-          About
-        </a>
-      </li>
+  <nav class="container-page flex h-16 items-center justify-between" aria-label="Main">
+    <a
+      href="/"
+      class="flex items-center gap-2 font-semibold tracking-tight text-ink hover:text-accent transition-colors"
+      aria-label={`${siteConfig.name} — home`}
+    >
+      <span
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-accent text-sm font-bold text-on-accent"
+        >{initials}</span
+      >
+      <span class="hidden sm:inline">{siteConfig.name}</span>
+    </a>
+
+    <div class="flex items-center gap-2 sm:gap-4">
       {
-        hasProjects && (
-          <li>
-            <a
-              href="#projects"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Projects
-            </a>
-          </li>
+        variant === "home" ? (
+          <ul class="hidden md:flex items-center gap-6 text-sm">
+            {links.map((l) => (
+              <li>
+                <a href={l.href} class="text-ink-soft hover:text-accent transition-colors">
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <a
+            href="/#projects"
+            class="hidden sm:inline-flex items-center gap-2 text-sm text-ink-soft hover:text-accent transition-colors"
+          >
+            <Icon name="arrow-left" class="h-4 w-4" />
+            All projects
+          </a>
         )
       }
+
+      <button
+        type="button"
+        id="menu-toggle"
+        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border border-line text-ink-soft"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span data-icon-open><Icon name="menu" class="h-4 w-4" /></span>
+        <span data-icon-close class="hidden"><Icon name="close" class="h-4 w-4" /></span>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="md:hidden hidden border-t border-line bg-bg">
+    <ul class="container-page flex flex-col py-3">
       {
-        hasExperience && (
+        links.map((l) => (
           <li>
-            <a
-              href="#experience"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Experience
+            <a href={l.href} class="block py-3 text-ink-soft hover:text-accent" data-close-menu>
+              {l.label}
             </a>
           </li>
-        )
-      }
-      {
-        hasEducation && (
-          <li>
-            <a
-              href="#education"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              Education
-            </a>
-          </li>
-        )
+        ))
       }
     </ul>
-  </nav>
+  </div>
 </header>
 
 <script>
-  window.addEventListener("scroll", () => {
-    const header = document.getElementById("header");
-    if (window.scrollY > 100) {
-      header?.classList.add("bg-white/80", "backdrop-blur-sm");
-    } else {
-      header?.classList.remove("bg-white/80", "backdrop-blur-sm");
-    }
+  const header = document.getElementById("site-header");
+  const onScroll = () => header?.setAttribute("data-scrolled", String(window.scrollY > 16));
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  const setOpen = (open: boolean) => {
+    menu?.classList.toggle("hidden", !open);
+    toggle?.setAttribute("aria-expanded", String(open));
+    toggle?.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    toggle?.querySelector("[data-icon-open]")?.classList.toggle("hidden", open);
+    toggle?.querySelector("[data-icon-close]")?.classList.toggle("hidden", !open);
+    if (open) header?.setAttribute("data-scrolled", "true");
+    else onScroll();
+  };
+  toggle?.addEventListener("click", () => setOpen(menu?.classList.contains("hidden") ?? false));
+  menu?.querySelectorAll("[data-close-menu]").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
   });
 </script>
-
-<style>
-  html {
-    scroll-behavior: smooth;
-  }
-</style>

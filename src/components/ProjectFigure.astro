@@ -1,0 +1,50 @@
+---
+import { Image, getImage } from "astro:assets";
+import type { Visual } from "../config";
+import { resolveImage, toFigure } from "../lib/images";
+
+interface Props {
+  visual: Visual;
+  /** Fallback alt text when there is no caption. */
+  alt: string;
+  eager?: boolean;
+  bare?: boolean;
+}
+
+const { visual, alt, eager = false, bare = false } = Astro.props;
+const figure = toFigure(visual);
+const meta = resolveImage(figure.src);
+const altText = figure.caption || alt;
+
+// Large version for the lightbox.
+const large = await getImage({ src: meta, width: Math.min(meta.width, 2400), format: "webp" });
+---
+
+<figure class="space-y-3">
+  <button
+    type="button"
+    class={`group block w-full overflow-hidden cursor-zoom-in ${
+      bare ? "rounded-2xl border border-line" : "rounded-2xl border border-line bg-white p-3 sm:p-4"
+    }`}
+    data-lightbox-src={large.src}
+    data-lightbox-alt={altText}
+    data-lightbox-caption={figure.caption}
+    aria-label={`Enlarge image: ${altText}`}
+  >
+    <Image
+      src={meta}
+      alt={altText}
+      widths={[480, 800, 1200, 1600].filter((w) => w <= meta.width).concat(meta.width < 480 ? [meta.width] : [])}
+      sizes="(min-width: 1024px) 800px, 100vw"
+      class={`h-auto w-full object-contain transition-transform duration-300 group-hover:scale-[1.01] ${bare ? "" : "rounded-lg"}`}
+      loading={eager ? "eager" : "lazy"}
+    />
+  </button>
+  {
+    figure.caption && (
+      <figcaption class="max-w-3xl border-l-2 border-accent/50 pl-4 text-sm leading-relaxed text-muted">
+        {figure.caption}
+      </figcaption>
+    )
+  }
+</figure>

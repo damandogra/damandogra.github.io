@@ -1,0 +1,35 @@
+---
+import SocialLinks from "./SocialLinks.astro";
+import Icon from "./Icon.astro";
+import { siteConfig } from "../config";
+---
+
+<section id="contact" class="py-20 sm:py-28" aria-labelledby="contact-title">
+  <div class="container-page">
+    <div class="relative overflow-hidden rounded-3xl border border-line bg-surface px-6 py-12 sm:px-12 sm:py-16">
+      <div
+        class="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent-soft blur-3xl"
+        aria-hidden="true"
+      >
+      </div>
+      <p class="text-sm font-medium text-accent">05</p>
+      <h2 id="contact-title" class="mt-2 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-ink">
+        Let's work together
+      </h2>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-muted">
+        I'm open to conversations about geospatial data, 3D city and subsurface models, and research or
+        internship opportunities. The quickest way to reach me is by email.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a
+          href={`mailto:${siteConfig.social.email}`}
+          class="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90"
+        >
+          <Icon name="mail" class="h-4 w-4" />
+          {siteConfig.social.email}
+        </a>
+        <SocialLinks />
+      </div>
+    </div>
+  </div>
+</section>

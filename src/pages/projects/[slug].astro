@@ -1,23 +1,20 @@
 ---
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
 import { siteConfig } from "../../config";
-import TechProject from "../../layouts/projects/pointcloud.astro";
-import ThesisProject from "../../layouts/projects/WaTOD.astro";
-import TransitDelhi from "../../layouts/projects/transit-delhi.astro";
 
-export async function getStaticPaths() {
-  return siteConfig.projects.map((project) => ({
+export function getStaticPaths() {
+  const projects = siteConfig.projects;
+  return projects.map((project, i) => ({
     params: { slug: project.slug },
-    props: { project },
+    props: {
+      project,
+      prev: projects[i - 1],
+      next: projects[i + 1],
+    },
   }));
 }
 
-const { project } = Astro.props;
+const { project, prev, next } = Astro.props;
 ---
 
-{project.type === "tech" ? (
-  <TechProject project={project} />
-) : project.type === "TransitDelhi" ? (
-  <TransitDelhi project={project} />
-) : (
-  <ThesisProject project={project} />
-)}
+<ProjectLayout project={project} prev={prev} next={next} />

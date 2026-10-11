@@ -1,145 +1,92 @@
-# Daman Dogra - Portfolio
+# Daman Dogra — Portfolio
+
 🌐 https://damandogra.github.io/
 
-A personal portfolio showcasing work in geospatial analysis, urban systems, and 3D data workflows.
+Personal portfolio covering geospatial data pipelines, point cloud processing, 3D city and subsurface models, and urban spatial analysis.
 
 ---
 
-## Tech Stack
+## Tech stack
 
-- Astro
-- Tailwind CSS
+- [Astro 5](https://astro.build) (static site, optimised images)
+- [Tailwind CSS 4](https://tailwindcss.com)
 - TypeScript
-- GitHub Pages (deployment)
+- IBM Plex Mono, self-hosted via `@fontsource`
+- GitHub Pages and GitHub Actions for deployment
+
+Features include a responsive layout with a mobile menu, an image lightbox, an "On this page" navigation on project pages, a sitemap, Open Graph/Twitter preview cards and a 404 page.
 
 ---
 
-## File Structure
+## File structure
 
 ```
-damandogra.github.io/
-├── public/
-│   └── projects/
-│       └── <project-slug>/     ← images for each project
-│           ├── cover.png
-│           └── ...
+├── public/                     ← served as-is (favicons, og.png, robots.txt)
 ├── src/
-│   ├── components/             ← reusable UI sections
-│   │   ├── About.astro
-│   │   ├── Education.astro
-│   │   ├── Experience.astro
-│   │   ├── Footer.astro
-│   │   ├── Header.astro
-│   │   ├── Hero.astro
-│   │   └── Projects.astro      ← renders project cards from config
+│   ├── assets/
+│   │   ├── portrait.png        ← hero portrait
+│   │   └── projects/<slug>/    ← project images (optimised at build time)
+│   ├── components/             ← homepage sections and shared UI
 │   ├── layouts/
-│   │   ├── ProjectLayout.astro ← shared project page template
-│   │   └── projects/           ← one file per project type
-│   │       ├── pointcloud.astro
-│   │       ├── transit-delhi.astro
-│   │       └── WaTOD.astro
+│   │   ├── BaseLayout.astro    ← <head>, SEO tags, header and footer
+│   │   └── ProjectLayout.astro ← single template for every project page
+│   ├── lib/images.ts           ← resolves "/projects/..." paths to optimised images
 │   ├── pages/
 │   │   ├── index.astro         ← homepage
-│   │   └── projects/
-│   │       └── [slug].astro    ← dynamic routing for all project pages
-│   ├── styles/
-│   │   └── global.css
-│   └── config.ts               ← all site content lives here
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+│   │   ├── 404.astro
+│   │   └── projects/[slug].astro
+│   ├── styles/global.css       ← colour tokens, fonts, base styles
+│   └── config.ts               ← ALL site content lives here
+└── astro.config.mjs
 ```
 
 ---
 
-## Adding a New Project
+## Editing content
 
-All project content is defined in `src/config.ts`. The project page is rendered dynamically via `src/pages/projects/[slug].astro` — no new page file is needed.
+All text lives in **`src/config.ts`**: name, bio, skills, projects, experience and education.
 
-### Step 1 — Add the project to `src/config.ts`
+### Add a project
 
-Add a new object to the `projects` array:
+1. Put images in `src/assets/projects/<your-slug>/`.
+2. Add an entry to `projects` in `src/config.ts`:
 
-```typescript
+```ts
 {
-  name: "Your Project Name",
-  slug: "your-project-slug",        // used in the URL: /projects/your-project-slug
-  type: "tech",                      // "tech" | "thesis" | "TransitDelhi"
-  description: "One-line description shown on the homepage card.",
+  name: "Project name",
+  slug: "your-slug",                 // URL: /projects/your-slug/
+  type: "tech",                      // "tech" | "thesis" | "web"
+  description: "One-line summary for the card and SEO.",
   link: "https://github.com/...",
-  linklabel: "Source code",
-  skills: ["Python", "Tag2", "Tag3"],
-  cover: "/projects/your-project-slug/cover.png",
+  linkLabel: "Source code",
+  demo: "https://...",               // optional live demo / report
+  demoLabel: "Open live map",
+  skills: ["Python", "QGIS"],
+  cover: "/projects/your-slug/cover.jpg",
 
-  summary: "Paragraph shown in the Overview section.",
-  objective: "What problem were you solving?",
+  // Every section below is optional and only shows when filled in.
+  summary: "…",
+  context: "…",
+  objective: "…",
+  methodology: ["Step 1", "Step 2"],
+  data: ["…"],
+  process: ["…"],
+  analysis: ["…"],
+  results: ["…"],
+  discussion: ["…"],
 
-  methodology: [
-    "Step one",
-    "Step two",
-    "Step three",
-  ],
-
-  analysis: [
-    "Key finding 1",
-    "Key finding 2",
-  ],
-
-  results: [
-    "Result 1",
-    "Result 2",
-  ],
-
-  resultVisuals: [
-    {
-      src: "/projects/your-project-slug/result.png",
-      caption: "Caption for the result image."
-    }
-  ],
-
-  discussion: [
-    "Reflection point 1",
-    "Reflection point 2",
-  ],
-
-  gallery: [
-    {
-      src: "/projects/your-project-slug/method.png",
-      caption: "Caption for method visual."
-    }
-  ]
+  // Visuals: an image path, or { src, caption }
+  methodologyVisuals: [{ src: "/projects/your-slug/method.png", caption: "…" }],
+  resultVisuals: [{ src: "/projects/your-slug/result.png", caption: "…" }],
+  gallery: [{ src: "/projects/your-slug/extra.png", caption: "…" }],
 }
 ```
 
-The `type` field controls which layout is used:
-| Type | Layout used |
-|---|---|
-| `"tech"` | `src/layouts/projects/pointcloud.astro` |
-| `"thesis"` | `src/layouts/projects/WaTOD.astro` |
-| `"TransitDelhi"` | `src/layouts/projects/transit-delhi.astro` |
+Image paths are checked at build time. A typo fails the build with a clear message.
 
-The numbering (01, 02 ...) on the homepage is automatic based on array position.
+### Change colours
 
-### Step 2 — Add images
-
-Place all project images in:
-```
-public/projects/your-project-slug/
-    cover.png        ← shown on the homepage card
-    method.png
-    result.png
-    ...
-```
-
-### Step 3 — Push
-
-```bash
-git add .
-git commit -m "Add project: Your Project Name"
-git push
-```
-
-GitHub Actions will build and deploy automatically.
+Edit the CSS variables at the top of `src/styles/global.css` (`--accent`, etc.).
 
 ---
 
@@ -147,30 +94,24 @@ GitHub Actions will build and deploy automatically.
 
 ```bash
 npm install
-npm run dev
-```
-
-Build:
-
-```bash
-npm run build
+npm run dev       # http://localhost:4321
+npm run build     # production build in dist/
+npm run preview   # serve the build locally
+npm run check     # type-check
 ```
 
 ---
 
 ## Deployment
 
-Deployed via GitHub Pages using GitHub Actions. Every push to `main` automatically updates the site.
+Deployed to GitHub Pages with GitHub Actions (`.github/workflows/deploy.yml`). Every push to `main` updates the site.
 
 ---
 
 ## Credits
 
-Based on a template by Ryan Fitzgerald: https://github.com/RyanFitzgerald/devportfolio  
-Modified for personal use.
-
----
+Originally based on [devportfolio](https://github.com/RyanFitzgerald/devportfolio) by Ryan Fitzgerald, since redesigned and extended.
 
 ## License
 
-MIT License. Original license retained.
+MIT License. The original license is retained in `LICENSE.md`.
