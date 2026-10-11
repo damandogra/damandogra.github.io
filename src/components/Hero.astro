@@ -122,11 +122,6 @@ const lod = await getImage({ src: portrait, width: 760, format: "webp" });
             fetchpriority="high"
           />
           <canvas class="pointer-events-none absolute inset-0 h-full w-full rounded-[1.75rem] opacity-0 transition-opacity duration-500" aria-hidden="true"></canvas>
-          <span
-            class="pointer-events-none absolute bottom-3 left-3 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-medium tracking-wide text-white/90 backdrop-blur transition-opacity duration-300"
-            data-lod-label
-            aria-hidden="true">Hover to load detail</span
-          >
         </div>
       </div>
     </div>
@@ -134,12 +129,12 @@ const lod = await getImage({ src: portrait, width: 760, format: "webp" });
 </section>
 
 <script>
-  // Portrait as a coarse raster; detail is "streamed" only around the cursor,
+  // Portrait as a coarse raster; detail is "streamed" only around the lens
+  // (resting on the face, following the cursor on hover),
   // like distance-based level of detail in 3D Tiles: full resolution inside
   // the lens, a medium level in a ring around it, coarse everywhere else.
   const box = document.getElementById("portrait-lod");
   const canvas = box?.querySelector("canvas");
-  const label = box?.querySelector<HTMLElement>("[data-lod-label]");
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (box && canvas && box.dataset.src) {
@@ -237,12 +232,14 @@ const lod = await getImage({ src: portrait, width: 760, format: "webp" });
         y = ty;
       }
       tr = lensRadius();
-      label?.classList.add("opacity-0");
       kick();
     };
-    const hide = () => {
-      tr = 0;
-      label?.classList.remove("opacity-0");
+    // Resting position: the lens sits on the face.
+    const FACE = { x: 0.5, y: 0.3 };
+    const rest = () => {
+      tx = box.offsetWidth * FACE.x * dpr;
+      ty = box.offsetHeight * FACE.y * dpr;
+      tr = lensRadius();
       kick();
     };
 
@@ -252,9 +249,9 @@ const lod = await getImage({ src: portrait, width: 760, format: "webp" });
       box.addEventListener("pointerenter", moveTo);
       box.addEventListener("pointermove", moveTo);
       box.addEventListener("pointerdown", moveTo);
-      box.addEventListener("pointerleave", hide);
+      box.addEventListener("pointerleave", rest);
       box.addEventListener("pointerup", (e) => {
-        if (e.pointerType !== "mouse") window.setTimeout(hide, 1200);
+        if (e.pointerType !== "mouse") window.setTimeout(rest, 1200);
       });
       // keyboard: reveal the whole portrait while focused
       box.addEventListener("focus", () => {
@@ -263,8 +260,17 @@ const lod = await getImage({ src: portrait, width: 760, format: "webp" });
         tr = Math.hypot(w, h);
         kick();
       });
-      box.addEventListener("blur", hide);
-      new ResizeObserver(rebuild).observe(box);
+      box.addEventListener("blur", rest);
+      new ResizeObserver(() => {
+        rebuild();
+        if (!raf) rest();
+      }).observe(box);
+
+      // On load: start on the face and "stream in" the detail.
+      x = box.offsetWidth * FACE.x * dpr;
+      y = box.offsetHeight * FACE.y * dpr;
+      r = 0;
+      window.setTimeout(rest, reduce ? 0 : 700);
     };
   }
 </script>
