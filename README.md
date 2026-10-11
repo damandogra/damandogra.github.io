@@ -1,4 +1,4 @@
-# Daman Dogra — Portfolio
+# Daman Dogra - Portfolio
 🌐 https://damandogra.github.io/
 
 A personal portfolio showcasing work in geospatial analysis, urban systems, and 3D data workflows.
