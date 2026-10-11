@@ -142,6 +142,102 @@ export const siteConfig: SiteConfig = {
 
   projects: [
     {
+      name: "Atlas: Flash-Flood Decision Support for the High Atlas",
+      slug: "atlas-flashflood",
+      type: "tech",
+      description:
+        "Forecast-driven flash-flood decision support for the Ounila valley (Morocco), built on a physically based rainfall–runoff–2D hydraulics–impact model chain and a static React + MapLibre web app.",
+      link: "https://github.com/damandogra/atlas-flashflood",
+      linkLabel: "Source code",
+      demo: "https://damandogra.github.io/atlas-flashflood/",
+      demoLabel: "Open live app",
+      skills: ["Python", "Hydrology (HEC-HMS)", "2D Hydraulics", "Copernicus DEM", "ERA5 / IMERG", "React", "MapLibre", "GitHub Actions"],
+      cover: "/projects/atlas-flashflood/cover.png",
+
+      summary:
+        "Atlas answers one question for the people who have to act when a storm comes: rain is coming — what will happen, where, when, and what should we do first? A live 7-day weather forecast is turned into an impact-based alert, village-by-village effects, road isolation, an early-action plan with deadlines, and evacuation routes, all served from a static web app on top of a model chain grounded in observed data.",
+
+      context:
+        "The Ounila valley drains 731 km² of the High Atlas down to the UNESCO ksar of Aït Ben Haddou. Its earthen villages, fords and wadi-bed tracks are exposed to sudden convective floods such as the November 2014 southern Morocco floods. Atlas started as a 48-hour prototype at the Cassini Hackathon and was rebuilt from scratch as Atlas v2 with a validated, physically based model chain.",
+      contextVisuals: [
+        {
+          src: "/projects/atlas-flashflood/subbasins-cn.png",
+          caption: "Ounila catchment delineated from Copernicus GLO-30: 730.9 km², 21 sub-basins at villages and confluences (left), and the SCS Curve Number grid from WorldCover and OpenLandMap soils (right).",
+        },
+      ],
+
+      objective:
+        "To turn a numerical weather forecast into actionable, place-specific flood information for local authorities: the probability of each flood level, when water reaches each village, which roads close and which villages are cut off, and what to do first.",
+
+      methodology: [
+        "Terrain: catchment and 21 sub-basins delineated from Copernicus GLO-30, matching the DRPE Agouillal gauge area (740 km²); flow paths breached rather than filled so radar-DSM artefacts in gorges do not create artificial reservoirs",
+        "Rainfall: GEV (L-moments) on 76 years of hourly liquid ERA5-Land rain, storm shape from GPM IMERG, areal bias correction ×1.43 against the Ouarzazate gauge, with bootstrap confidence intervals",
+        "Hydrology: HEC-HMS-equivalent engine in Python (SCS-CN loss, Clark unit hydrograph, Muskingum-Cunge routing), exported as a HEC-HMS project for independent cross-checks",
+        "Hydraulics: own 2D local-inertia shallow-water solver (LISFLOOD-FP formulation) on 30 m cells over 101 km² of valley corridors, run for a 13-storm library from 20 to 160 mm / 24 h",
+        "Impacts: DEFRA FD2320 hazard on 16,653 Google building footprints, ARR 2019 vehicle limits on OSM roads and fords, and road-graph isolation to the RN9 recomputed every 30 minutes",
+        "Forecast: Open-Meteo ECMWF, GFS, ICON and a 51-member ensemble, adjusted for antecedent soil moisture and matched to the precomputed library, with identical logic in Python and TypeScript (parity test)",
+        "Delivery: static React + MapLibre app on GitHub Pages; a GitHub Actions workflow refreshes the forecast every 6 hours",
+      ],
+
+      data: [
+        "Copernicus GLO-30 DEM",
+        "ERA5-Land hourly rainfall (1950–present), GPM IMERG V07, GHCN Ouarzazate gauge",
+        "ESA WorldCover and OpenLandMap soils",
+        "Google Open Buildings (via VIDA), OpenStreetMap roads, fords and facilities",
+        "GHS-POP 2020 and WorldPop 2020 population",
+        "Open-Meteo deterministic and ensemble forecasts",
+      ],
+
+      analysis: [
+        "Modelled storm runoff at the Agouillal gauge is 28 mm/yr, inside the observed 19–36 mm/yr, and design peaks at all 21 control points fall within the High Atlas regional envelope (Ourika, Rheraya)",
+        "The 2D solver reaches the analytical Manning normal depth within 5% and every library run closes its mass balance to 10⁻⁴ or better",
+        "2D peaks are 8–25% below the HMS peaks: the wide gravel beds store and attenuate floods, most strongly for small events",
+        "Two independent population products agree within 5% (15,571 residents in the catchment)",
+      ],
+      analysisVisuals: [
+        {
+          src: "/projects/atlas-flashflood/hydrographs.png",
+          caption: "T10 and T100 design-flood hydrographs at control points from Télouet (16 km²) to Aït Ben Haddou (731 km²), with the IMERG-shaped catchment hyetograph.",
+        },
+        {
+          src: "/projects/atlas-flashflood/regional-check.png",
+          caption: "Validation: design peaks against Francou-Rodier K lines and Ourika gauge records (left), and outlet flood frequency by rainfall level against the observed water balance (right).",
+        },
+      ],
+
+      results: [
+        "The dominant impact is isolation, not flooded houses: from a 5–10-year flood upward, 19 villages lose 4WD access to the RN9 because tracks and the RP1506 run in or across the wadi",
+        "A 100-year storm reaches 230 buildings (64 in extreme hazard) and 249 residents, with collapse possible for 46 earthen houses",
+        "Flood-proofing the 10 most critical road links cuts isolation in a 10-year flood from 402 to 144 village-hours, with 10 of 19 villages keeping access; check dams barely change flood peaks",
+        "The T100 storm generates 128 early actions (36 critical) from an editable IFRC-style playbook, the first due 5.5 h after storm start",
+        "Past storms such as the November 2014 floods can be replayed through the same logic for exercises and training",
+      ],
+      resultVisuals: [
+        {
+          src: "/projects/atlas-flashflood/flood-overview.png",
+          caption: "Maximum flood depth for the 10-year (13.7 km² flooded, 367 m³/s) and 100-year (19.3 km², 850 m³/s) design storms along the valley corridors.",
+        },
+        {
+          src: "/projects/atlas-flashflood/zoom-aitbenhaddou.png",
+          caption: "Tamdaght to the UNESCO ksar of Aït Ben Haddou, 100-year storm: maximum depth, maximum velocity, and the time water first exceeds 0.3 m.",
+        },
+      ],
+
+      discussion: [
+        "Atlas is a research prototype for planning and training, not a certified operational warning service",
+        "No flood-peak record is public for this river, so peaks are bounded by regional evidence and the outlet water balance rather than calibrated event by event",
+        "The 30 m terrain smooths gorges narrower than one cell, and forecasts inherit NWP errors in convective rain",
+        "Precomputing the 2D flood library is what lets a static site deliver flood maps for any forecast in milliseconds; a HEC-RAS 2D package is prepared for an independent cross-check",
+      ],
+
+      gallery: [
+        {
+          src: "/projects/atlas-flashflood/scenario-library.png",
+          caption: "Scenario library used to match live forecasts to a precomputed flood map: peak discharge (2D vs HMS) and flooded area against 24 h catchment rainfall.",
+        },
+      ],
+    },
+    {
       name: "Point Cloud Classification",
       slug: "point-cloud-classification",
       type: "tech",
