@@ -128,7 +128,7 @@ export const siteConfig: SiteConfig = {
     { label: "Languages", items: ["Python", "C++", "R", "Java", "SQL"] },
     {
       label: "Geospatial",
-      items: ["QGIS", "PostGIS", "OpenStreetMap", "GTFS", "Spatial MCDA"],
+      items: ["QGIS", "PostGIS", "OpenStreetMap", "GTFS", "InSAR (SARPROZ)", "Spatial MCDA"],
     },
     {
       label: "3D & point clouds",
@@ -644,6 +644,16 @@ export const siteConfig: SiteConfig = {
         "Streaming national subsurface models (GeoTOP, REGIS II, DGM) on the web with OGC 3D Tiles.",
         "Adding 3D Tiles 1.1 voxel tiles to a Java/Quarkus backend, with a CesiumJS viewer.",
         "Implemented sub-millimetre RD/NAP → WGS84 transforms (RDNAPTRANS™2018) and automated tileset validation.",
+      ],
+    },
+    {
+      company: "EEFIT – Earthquake Engineering Field Investigation Team",
+      link: "https://www.linkedin.com/company/the-earthquake-engineering-field-investigation-team-eefit/",
+      title: "Working Student",
+      dateRange: "Sep 2026 - Present",
+      bullets: [
+        "Working on the CHASE-funded Hatay (Türkiye) earthquake project.",
+        "Ran InSAR coherence analysis in SARPROZ to flag potentially damaged sites for the field survey team.",
       ],
     },
     {
