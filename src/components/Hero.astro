@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import SocialLinks from "./SocialLinks.astro";
 import Icon from "./Icon.astro";
 import portrait from "../assets/portrait.jpg";
@@ -7,6 +7,9 @@ import { siteConfig } from "../config";
 
 // Concentric "contour lines" — a nod to terrain models.
 const contours = Array.from({ length: 9 }, (_, i) => 60 + i * 55);
+
+// Source for the pixel / level-of-detail effect on the portrait.
+const lod = await getImage({ src: portrait, width: 760, format: "webp" });
 ---
 
 <section id="top" class="relative isolate overflow-hidden">
@@ -101,16 +104,167 @@ const contours = Array.from({ length: 9 }, (_, i) => 60 + i * 55);
           aria-hidden="true"
         >
         </div>
-        <Image
-          src={portrait}
-          alt={`Painted portrait of ${siteConfig.name}`}
-          widths={[320, 480, 720, 960]}
-          sizes="(min-width: 1024px) 380px, (min-width: 768px) 320px, 260px"
-          class="h-auto w-[240px] sm:w-[280px] md:w-[320px] lg:w-[380px] rounded-[1.75rem] border border-line shadow-2xl shadow-black/20 rotate-[1.5deg] transition-transform duration-500 hover:rotate-0"
-          loading="eager"
-          fetchpriority="high"
-        />
+        <div
+          id="portrait-lod"
+          class="group relative touch-pan-y w-[240px] sm:w-[280px] md:w-[320px] lg:w-[380px] overflow-hidden rounded-[1.75rem] border border-line shadow-2xl shadow-black/20 rotate-[1.5deg] transition-transform duration-500 hover:rotate-0 cursor-crosshair"
+          data-src={lod.src}
+          tabindex="0"
+          role="img"
+          aria-label={`Painted portrait of ${siteConfig.name}. Move the cursor over it to load detail.`}
+        >
+          <Image
+            src={portrait}
+            alt=""
+            widths={[320, 480, 720, 960]}
+            sizes="(min-width: 1024px) 380px, (min-width: 768px) 320px, 260px"
+            class="pointer-events-none block h-auto w-full select-none"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <canvas class="pointer-events-none absolute inset-0 h-full w-full rounded-[1.75rem] opacity-0 transition-opacity duration-500" aria-hidden="true"></canvas>
+          <span
+            class="pointer-events-none absolute bottom-3 left-3 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-medium tracking-wide text-white/90 backdrop-blur transition-opacity duration-300"
+            data-lod-label
+            aria-hidden="true">Hover to load detail</span
+          >
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  // Portrait as a coarse raster; detail is "streamed" only around the cursor,
+  // like distance-based level of detail in 3D Tiles: full resolution inside
+  // the lens, a medium level in a ring around it, coarse everywhere else.
+  const box = document.getElementById("portrait-lod");
+  const canvas = box?.querySelector("canvas");
+  const label = box?.querySelector<HTMLElement>("[data-lod-label]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (box && canvas && box.dataset.src) {
+    const ctx = canvas.getContext("2d")!;
+    const tmp = document.createElement("canvas");
+    const tctx = tmp.getContext("2d")!;
+    const img = new Image();
+    img.decoding = "async";
+    img.src = box.dataset.src;
+
+    const COARSE = 10; // block size in CSS px outside the lens
+    const MEDIUM = 4; // block size in the ring around the lens
+    let w = 0, h = 0, dpr = 1;
+    let coarse: HTMLCanvasElement, medium: HTMLCanvasElement, full: HTMLCanvasElement;
+
+    // lens state (device px), eased towards the target every frame
+    let x = 0, y = 0, r = 0;
+    let tx = 0, ty = 0, tr = 0;
+    let raf = 0;
+
+    const pixelate = (block: number) => {
+      const c = document.createElement("canvas");
+      c.width = w;
+      c.height = h;
+      const cols = Math.max(4, Math.round(w / dpr / block));
+      const rows = Math.max(4, Math.round(h / dpr / block));
+      const s = document.createElement("canvas");
+      s.width = cols;
+      s.height = rows;
+      s.getContext("2d")!.drawImage(img, 0, 0, cols, rows);
+      const cc = c.getContext("2d")!;
+      cc.imageSmoothingEnabled = false;
+      cc.drawImage(s, 0, 0, cols, rows, 0, 0, w, h);
+      return c;
+    };
+
+    const rebuild = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = Math.round(box.offsetWidth * dpr);
+      h = Math.round(box.offsetHeight * dpr);
+      canvas.width = tmp.width = w;
+      canvas.height = tmp.height = h;
+      coarse = pixelate(COARSE);
+      medium = pixelate(MEDIUM);
+      full = document.createElement("canvas");
+      full.width = w;
+      full.height = h;
+      full.getContext("2d")!.drawImage(img, 0, 0, w, h);
+      render();
+    };
+
+    const layer = (src: HTMLCanvasElement, radius: number) => {
+      if (radius < 1) return;
+      tctx.globalCompositeOperation = "source-over";
+      tctx.clearRect(0, 0, w, h);
+      tctx.drawImage(src, 0, 0);
+      tctx.globalCompositeOperation = "destination-in";
+      const g = tctx.createRadialGradient(x, y, radius * 0.55, x, y, radius);
+      g.addColorStop(0, "rgba(0,0,0,1)");
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      tctx.fillStyle = g;
+      tctx.fillRect(0, 0, w, h);
+      ctx.drawImage(tmp, 0, 0);
+    };
+
+    const render = () => {
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(coarse, 0, 0);
+      layer(medium, r * 1.9);
+      layer(full, r);
+    };
+
+    const tick = () => {
+      const k = reduce ? 1 : 0.18;
+      x += (tx - x) * k;
+      y += (ty - y) * k;
+      r += (tr - r) * (reduce ? 1 : 0.1);
+      render();
+      if (Math.abs(tx - x) + Math.abs(ty - y) + Math.abs(tr - r) > 0.5) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        raf = 0;
+      }
+    };
+    const kick = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
+    const lensRadius = () => box.offsetWidth * 0.2 * dpr;
+    const moveTo = (e: PointerEvent) => {
+      tx = e.offsetX * dpr;
+      ty = e.offsetY * dpr;
+      if (r < 1) {
+        x = tx;
+        y = ty;
+      }
+      tr = lensRadius();
+      label?.classList.add("opacity-0");
+      kick();
+    };
+    const hide = () => {
+      tr = 0;
+      label?.classList.remove("opacity-0");
+      kick();
+    };
+
+    img.onload = () => {
+      rebuild();
+      canvas.style.opacity = "1";
+      box.addEventListener("pointerenter", moveTo);
+      box.addEventListener("pointermove", moveTo);
+      box.addEventListener("pointerdown", moveTo);
+      box.addEventListener("pointerleave", hide);
+      box.addEventListener("pointerup", (e) => {
+        if (e.pointerType !== "mouse") window.setTimeout(hide, 1200);
+      });
+      // keyboard: reveal the whole portrait while focused
+      box.addEventListener("focus", () => {
+        tx = w / 2;
+        ty = h / 2;
+        tr = Math.hypot(w, h);
+        kick();
+      });
+      box.addEventListener("blur", hide);
+      new ResizeObserver(rebuild).observe(box);
+    };
+  }
+</script>
