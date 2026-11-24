@@ -142,64 +142,55 @@ export const siteConfig: SiteConfig = {
 
   projects: [
     {
-      name: "CityJSON Export for the CityJSON QGIS Plugin",
+      name: "CityJSON Export for QGIS",
       slug: "cityjson-export",
       type: "tech",
       description:
-        "An open-source contribution to the official CityJSON QGIS plugin: load a 3D city model, delete objects or edit attributes in QGIS, and save it back as valid CityJSON without losing Solids, semantics, appearances or unloaded LoDs.",
+        "Added CityJSON export to the official CityJSON QGIS plugin: edit 3D city models in QGIS and save them back without losing their structure.",
       link: "https://github.com/cityjson/cityjson-qgis-plugin/pull/78",
       linkLabel: "Pull request #78",
       demo: "https://github.com/cityjson/cityjson-qgis-plugin",
       demoLabel: "Plugin repository",
-      skills: ["Python", "PyQGIS", "Qt / PyQt", "CityJSON", "3D BAG", "QGIS Processing", "pytest", "Docker", "cjval"],
+      skills: ["Python", "PyQGIS", "Qt", "CityJSON", "3D BAG", "pytest"],
       cover: "/projects/cityjson-export/cover.png",
 
       summary:
-        "The CityJSON QGIS plugin could load 3D city models but not save them. I added a CityJSON export so a model can go through QGIS and back: load a file, delete buildings or fix attributes, and write a new CityJSON file. The feature is available from the menu and the Processing toolbox, is covered by 300+ tests, and was merged upstream in November 2026.",
-
-      context:
-        "CityJSON is a compact JSON encoding of CityGML used for 3D city models such as the Dutch 3D BAG. The CityJSON QGIS plugin is the standard way to bring these models into QGIS, but it was read-only: any cleaning or editing had to happen in another tool. The work built on an existing writer-dialog scaffold on the cityjson-writter branch and ran from August to November 2026.",
-
-      objective:
-        "To make QGIS a round-trip editor for CityJSON: let users delete objects, edit attributes and clip to an area, and export a file that is still valid CityJSON and keeps everything they did not touch.",
+        "The CityJSON QGIS plugin could load 3D city models but not save them. I added export: load a file, delete objects or edit attributes, and save it back as valid CityJSON. Merged upstream in November 2026.",
+      summaryVisuals: [
+        {
+          src: "/projects/cityjson-export/export-dialog.png",
+          caption: "The export dialog and its options.",
+        },
+      ],
 
       methodology: [
-        "Patch, don't rebuild: QGIS layers are flat MultiPolygonZ, so instead of writing CityJSON from the layers, export re-reads the original file, keeps the objects that still have rows in QGIS, applies attribute edits, and reuses the plugin's subset code to renumber vertices, materials and textures",
-        "Provenance stamps: at load time every layer is stamped with its source file and load settings (LoD, semantic surfaces, parent attributes), so the export dialog knows where the data came from without user input",
-        "Deleted vs never loaded: an object with no row is only treated as deleted if it had the loaded LoD; objects hidden by the LoD filter are kept by default, with an option to drop them",
-        "One object, many rows: with LoD or semantic-surface splitting, an object survives if any of its LoD rows survive; deleting only some of its surface rows is refused because it would change topology",
-        "Geometry is read-only: each row is compared corner by corner with the original within half a grid step, and any edit stops the export and names the affected objects",
-        "Area filter: objects are kept by centroid together with their parents and children, the same rule the loader uses, so polygons are never clipped",
-        "Delivery: a Processing algorithm first (testable headlessly), then the menu dialog as a thin wrapper; tested in Docker against QGIS 3.40, 3.44 and 4.x",
+        "Load: layers remember their source file and load settings",
+        "Edit: delete objects or change attributes in QGIS",
+        "Export: re-read the original, keep surviving objects, apply edits",
+      ],
+      methodologyVisuals: [
+        {
+          src: "/projects/cityjson-export/how-it-works.png",
+          caption: "Export patches the original file, so structure that flat QGIS layers can't hold is kept.",
+        },
       ],
 
-      data: [
-        "3D BAG tiles 10-282-560 and 10-284-560 (Netherlands, LoD 0–2.2)",
-        "Hand-built CityJSON fixtures: LoD2 Solids with semantics and materials, an unloaded LoD1, appearance and metadata",
-        "cjval (CityJSON validator) and a custom face checker based on val3dity tolerances",
-      ],
-
-      analysis: [
-        "A test on what QGIS editing does to 3D geometry: on one 3D BAG building (15 faces, 70 corners), every vertex edit cracked or bent the building, because a corner shared by n faces is stored as n separate copies; only moving the whole building was safe",
-        "A geometry checker (scripts/check_geometry.py) flags non-planar, degenerate and self-intersecting faces at a 1 cm tolerance, the val3dity default",
-        "A fidelity test round-trips an LoD2 Solid with semantics, materials, an unloaded LoD1, appearance and metadata: everything survives, and materials are reduced and renumbered correctly",
-        "Saving and reopening a QGIS project keeps the layer stamps but empties the memory layers (722 → 0 rows), so export is limited to one session and refuses empty layers",
+      analysisVisuals: [
+        {
+          src: "/projects/cityjson-export/geometry-read-only.png",
+          caption: "Why geometry is read-only: QGIS stores a shared corner once per face, so moving one copy cracks the building.",
+        },
       ],
 
       results: [
-        "Merged into cityjson/cityjson-qgis-plugin (PR #78, +3,700 lines across 27 files)",
-        "Export from Vector → CityJSON Loader → Export CityJSON... or the Processing toolbox, with options to keep or drop unloaded LoDs, export only an area, and add the result to the map",
-        "On 3D BAG tile 10-282-560 with one building deleted: 7.1 MB keeping unloaded LoDs, 4.8 MB dropping them, 480 KB for an area export; all valid in cjval",
-        "Solids, semantic surfaces, appearances, geometry templates, unloaded LoDs and metadata are kept from the original file",
-        "Fixed existing bugs along the way: subset processing crashing on objects without geometry, and packaging that missed modules and listed non-existent files",
-        "344 tests pass, including new dialog tests; ruff clean",
+        "Available from the menu and the Processing toolbox",
+        "344 tests; every export valid in cjval",
       ],
-
-      discussion: [
-        "Geometry editing is deliberately not supported: the flat layer model cannot edit a shared 3D corner safely, and measuring this first avoided building a feature that would silently break buildings",
-        "New objects drawn in QGIS are not exported, and output is plain CityJSON rather than CityJSONSeq",
-        "Export works within one QGIS session; after reopening a project the file has to be loaded again",
-        "A development log documents every decision and measurement, so maintainers can follow why the design looks the way it does",
+      resultVisuals: [
+        {
+          src: "/projects/cityjson-export/export-sizes.png",
+          caption: "Export options on a 3D BAG tile.",
+        },
       ],
     },
     {
